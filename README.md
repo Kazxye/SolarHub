@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SolarHub - Frontend
 
-## Getting Started
+Plataforma de venda de scripts premium para VALORANT.
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Framework:** Next.js 16.1.6 (App Router)
+- **React:** 19.2.3
+- **Linguagem:** TypeScript 5
+- **Estilização:** Tailwind CSS v4 + PostCSS
+- **Tema:** next-themes (dark/light)
+- **Ícones:** lucide-react
+- **Utilitários:** clsx + tailwind-merge
+
+## Estrutura do Projeto
+
+```
+src/
+├── app/
+│   ├── globals.css          # Variáveis de tema, animações, estilos globais
+│   ├── layout.tsx           # Layout raiz (fontes, ThemeProvider)
+│   └── page.tsx             # Página principal (Home)
+│
+├── components/
+│   ├── layout/
+│   │   ├── header.tsx       # Header fixa com scroll blur e nav responsiva
+│   │   └── footer.tsx       # Footer do site
+│   │
+│   ├── sections/
+│   │   └── hero.tsx         # Hero Section (HUD cards + Jett)
+│   │
+│   ├── providers/
+│   │   └── theme-provider.tsx  # Provider do next-themes
+│   │
+│   └── ui/
+│       ├── button.tsx       # Componente Button (primary, secondary, ghost, outline)
+│       └── theme-toggle.tsx # Toggle dark/light mode
+│
+├── lib/
+│   └── utils.ts             # cn() helper (clsx + tailwind-merge)
+│
+public/
+├── icon.png                 # Ícone/logo da SolarHub
+├── logo-horizontal.png      # Logo horizontal
+├── logo-vertical.png        # Logo vertical
+├── logo-symbol.png          # Símbolo do logo
+└── amigo.png                # Asset auxiliar
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Paleta de Cores
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Token            | Light       | Dark        |
+|------------------|-------------|-------------|
+| background       | `#ffffff`   | `#0a0a0b`   |
+| surface          | `#f4f4f5`   | `#111113`   |
+| border           | `#e4e4e7`   | `#27272a`   |
+| text-primary     | `#09090b`   | `#fafafa`   |
+| text-secondary   | `#71717a`   | `#a1a1aa`   |
+| accent           | `#f97316`   | `#f97316`   |
+| accent-hover     | `#ea580c`   | `#ea580c`   |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+```bash
+npm run dev      # Dev server (localhost:3000)
+npm run build    # Build de produção
+npm run start    # Servir build de produção
+npm run lint     # ESLint
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Componentes Principais
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Header
+- Fixa no topo, transparente no início e com backdrop-blur ao scrollar
+- Nav: Home, Scripts, Planos, Suporte
+- CTAs: Discord (link) + Entrar (botão primário)
+- Menu mobile colapsável
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Hero Section
+- Layout assimétrico (grid 12-col)
+- **Esquerda:** Headline + 4 HUD cards modulares (Speed, Security, Updates, Community) + CTAs + trust bar
+- **Direita:** Jett (imagem da API do VALORANT) com glow, rings e floating stat cards
+- Animações staggered de fade-in
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Imagem da Jett
+Carregada via API externa (não está em `/public`):
+```
+https://media.valorant-api.com/agents/add6443a-41bd-e414-f6ad-e58d267f4e95/fullportrait.png
+```
+Domínio configurado em `next.config.ts` > `images.remotePatterns`.
