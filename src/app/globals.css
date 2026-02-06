@@ -132,3 +132,54 @@ body {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
+/* ── Auth page animations ── */
+@keyframes authFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes authCardGlow {
+  0%, 100% { box-shadow: 0 0 40px rgba(249, 115, 22, 0.04); }
+  50% { box-shadow: 0 0 60px rgba(249, 115, 22, 0.08); }
+}
+
+@keyframes gridFloat {
+  0%, 100% { opacity: 0.03; }
+  50% { opacity: 0.06; }
+}
+
+.auth-fade-in {
+  opacity: 0;
+  animation: authFadeIn 0.5s ease-out forwards;
+}
+
+.auth-delay-1 { animation-delay: 0.1s; }
+.auth-delay-2 { animation-delay: 0.2s; }
+.auth-delay-3 { animation-delay: 0.3s; }
+.auth-delay-4 { animation-delay: 0.4s; }
+
+.auth-card-glow {
+  animation: authCardGlow 4s ease-in-out infinite;
+}
+
+/* Auth form content transition */
+.auth-content-enter {
+  animation: authFadeIn 0.25s ease-out forwards;
+}
+
+/* Strength bar smooth fill */
+.strength-bar-fill {
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Auth input focus glow */
+.auth-input:focus {
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}

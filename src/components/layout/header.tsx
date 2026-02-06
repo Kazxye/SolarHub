@@ -7,11 +7,13 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+const DISCORD_URL = "https://discord.gg/solarhub";
+
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/scripts", label: "Scripts" },
+  { href: "/#products", label: "Cheats" },
   { href: "/planos", label: "Planos" },
-  { href: "/suporte", label: "Suporte" },
+  { href: DISCORD_URL, label: "Suporte", external: true },
 ];
 
 function DiscordIcon({ className }: { className?: string }) {
@@ -66,32 +68,48 @@ export function Header() {
 
             {/* Nav — center */}
             <nav className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="relative px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) =>
+                link.external ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="relative px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
             </nav>
 
             {/* Actions — right */}
             <div className="hidden md:flex items-center gap-2.5">
-              <Link
-                href="/discord"
+              <a
+                href={DISCORD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
               >
                 <DiscordIcon className="w-4 h-4" />
                 Discord
-              </Link>
+              </a>
 
               <div className="w-px h-5 bg-border/60" />
 
-              <Button variant="primary" size="sm">
-                Entrar
-              </Button>
+              <Link href="/login">
+                <Button variant="primary" size="sm">
+                  Login
+                </Button>
+              </Link>
             </div>
 
             {/* Mobile toggle */}
@@ -121,31 +139,48 @@ export function Header() {
         >
           <div className="bg-background/95 backdrop-blur-xl border-t border-border/50">
             <div className="max-w-7xl mx-auto px-4 py-4 space-y-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="block px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) =>
+                link.external ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="block px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
 
               <div className="pt-3 mt-3 border-t border-border/50 space-y-2">
-                <Link
-                  href="/discord"
+                <a
+                  href={DISCORD_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <DiscordIcon className="w-4 h-4" />
                   Discord
-                </Link>
+                </a>
 
                 <div className="px-1">
-                  <Button variant="primary" size="md" className="w-full">
-                    Entrar
-                  </Button>
+                  <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="primary" size="md" className="w-full">
+                      Login
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

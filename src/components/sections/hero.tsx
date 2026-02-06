@@ -146,7 +146,7 @@ export function Hero() {
 
               {/* Jett */}
               <Image
-                src="https://media.valorant-api.com/agents/add6443a-41bd-e414-f6ad-e58d267f4e95/fullportrait.png"
+                src="/jett.png"
                 alt="Jett - VALORANT Agent"
                 width={700}
                 height={700}

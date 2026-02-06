@@ -7,10 +7,6 @@ import { cn } from "@/lib/utils";
 import {
   ArrowRight,
   ChevronDown,
-  ShieldCheck,
-  RefreshCw,
-  Zap,
-
   Crosshair,
   Eye,
   Cpu,
@@ -36,7 +32,7 @@ interface Game {
   id: string;
   name: string;
   subtitle: string;
-  image: string;
+  image: string | null;
   accentColor: string;
   badge: string | null;
   isSpoofer?: boolean;
@@ -53,7 +49,7 @@ const games: Game[] = [
     id: "valorant",
     name: "VALORANT",
     subtitle: "Tactical shooter",
-    image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/header.jpg",
+    image: "/sagevalorant.png",
     accentColor: "red",
     badge: "Popular",
     tools: [
@@ -66,7 +62,7 @@ const games: Game[] = [
     id: "cs2",
     name: "CS2",
     subtitle: "Competitive FPS",
-    image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/header.jpg",
+    image: "/cs2.png",
     accentColor: "amber",
     badge: "Recomendado",
     tools: [
@@ -79,7 +75,7 @@ const games: Game[] = [
     id: "fortnite",
     name: "FORTNITE",
     subtitle: "Battle royale",
-    image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/header.jpg",
+    image: "/fortnite.jpg",
     accentColor: "blue",
     badge: null,
     tools: [
@@ -92,7 +88,7 @@ const games: Game[] = [
     id: "dayz",
     name: "DAYZ",
     subtitle: "Survival",
-    image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/header.jpg",
+    image: "/Dayz.png",
     accentColor: "emerald",
     badge: null,
     tools: [
@@ -105,7 +101,7 @@ const games: Game[] = [
     id: "spoofer",
     name: "HWID SPOOFER",
     subtitle: "Security Tool",
-    image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/header.jpg",
+    image: null,
     accentColor: "violet",
     badge: "Security Tool",
     isSpoofer: true,
@@ -207,16 +203,28 @@ function GameCard({
         onClick={onToggle}
         className="relative w-full h-48 sm:h-56 overflow-hidden cursor-pointer text-left"
       >
-        {/* Image with zoom on hover */}
-        <Image
-          src={game.image}
-          alt={game.name}
-          fill
-          className={cn(
-            "object-cover transition-transform duration-700",
-            isOpen ? "scale-105" : "group-hover:scale-105"
-          )}
-        />
+        {/* Image or gradient fallback */}
+        {game.image ? (
+          <Image
+            src={game.image}
+            alt={game.name}
+            fill
+            className={cn(
+              "object-cover transition-transform duration-700",
+              isOpen ? "scale-105" : "group-hover:scale-105"
+            )}
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-[#0a0a0b] to-violet-950/50">
+            <div className="absolute inset-0 opacity-[0.07]" style={{
+              backgroundImage: "linear-gradient(#8b5cf6 1px, transparent 1px), linear-gradient(90deg, #8b5cf6 1px, transparent 1px)",
+              backgroundSize: "30px 30px",
+            }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+              <Fingerprint className="w-28 h-28 text-violet-500/20" />
+            </div>
+          </div>
+        )}
 
         {/* Dark overlay gradient */}
         <div className={cn(
@@ -364,7 +372,7 @@ export function Products() {
 
   return (
     <section
-      id="produtos"
+      id="products"
       ref={sectionRef as React.RefObject<HTMLElement>}
       className="relative py-24 sm:py-32"
     >
@@ -376,12 +384,12 @@ export function Products() {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 section-fade-in">
           <span className="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent bg-accent/10 rounded-full mb-4 border border-accent/20">
-            Game Hub
+            Cheats
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-text-primary">
-            Escolha seu{" "}
+            Escolha sua{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
-              jogo
+              ferramenta
             </span>
           </h2>
           <p className="mt-4 text-base sm:text-lg text-text-secondary leading-relaxed">
@@ -407,34 +415,6 @@ export function Products() {
           ))}
         </div>
 
-        {/* Bottom CTA Bar */}
-        <div className="mt-16 section-fade-in section-delay-6">
-          <div className="relative p-6 sm:p-8 rounded-2xl bg-surface/60 backdrop-blur-sm border border-border/50 overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent via-accent/60 to-transparent" />
-
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-6 gap-y-2">
-                <div className="flex items-center gap-2 text-sm text-text-secondary">
-                  <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                  <span>100% Indetectável</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-text-secondary">
-                  <RefreshCw className="w-4 h-4 text-blue-500" />
-                  <span>Atualização em &lt;2hrs</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-text-secondary">
-                  <Zap className="w-4 h-4 text-accent" />
-                  <span>Suporte 24/7</span>
-                </div>
-              </div>
-
-              <Button size="lg" className="shrink-0">
-                Ver todos os planos
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
