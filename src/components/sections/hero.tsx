@@ -31,8 +31,8 @@ export function Hero() {
                 </span>
               </h1>
 
-              <p className="mt-4 text-base text-text-secondary leading-relaxed max-w-md">
-                Scripts de elite para quem não aceita menos que a vitória.
+              <p className="mt-5 text-base text-text-secondary leading-relaxed max-w-md">
+                Ferramentas Auxiliares para quem não aceita menos que a vitória.
               </p>
             </div>
 

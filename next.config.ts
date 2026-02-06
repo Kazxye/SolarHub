@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: "media.valorant-api.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "shared.cloudflare.steamstatic.com",
+        pathname: "/**",
+      },
     ],
   },
 };
