@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/discord", label: "Discord" },
+  { href: "/scripts", label: "Scripts" },
+  { href: "/planos", label: "Planos" },
+  { href: "/suporte", label: "Suporte" },
 ];
 
 function DiscordIcon({ className }: { className?: string }) {
@@ -28,89 +29,125 @@ function DiscordIcon({ className }: { className?: string }) {
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl">
-      <div className="bg-background/60 backdrop-blur-xl border border-border/50 rounded-2xl shadow-lg shadow-black/5">
-        <div className="px-6 py-3">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2.5">
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <div
+        className={cn(
+          "transition-all duration-300 border-b",
+          scrolled
+            ? "bg-background/80 backdrop-blur-xl border-border/50 shadow-sm shadow-black/5"
+            : "bg-transparent border-transparent"
+        )}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2.5 group">
               <Image
                 src="/icon.png"
                 alt="SolarHub"
-                width={28}
-                height={28}
-                className="w-7 h-7"
+                width={30}
+                height={30}
+                className="w-[30px] h-[30px] group-hover:scale-105 transition-transform duration-200"
               />
-              <span className="text-base font-semibold text-text-primary">
-                solarhub
+              <span className="text-base font-bold text-text-primary tracking-tight">
+                Solar<span className="text-accent">Hub</span>
               </span>
             </Link>
 
+            {/* Nav — center */}
             <nav className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-4 py-1.5 text-sm text-text-secondary hover:text-text-primary transition-colors"
+                  className="relative px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
                 >
                   {link.label}
                 </Link>
               ))}
             </nav>
 
-            <div className="hidden md:flex items-center gap-3">
-              <ThemeToggle />
-              <Button variant="ghost" size="sm">
-                Entrar
-              </Button>
-              <Button variant="outline" size="sm">
+            {/* Actions — right */}
+            <div className="hidden md:flex items-center gap-2.5">
+              <Link
+                href="/discord"
+                className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
+              >
                 <DiscordIcon className="w-4 h-4" />
                 Discord
+              </Link>
+
+              <div className="w-px h-5 bg-border/60" />
+
+              <Button variant="primary" size="sm">
+                Entrar
               </Button>
             </div>
 
+            {/* Mobile toggle */}
             <button
-              className="md:hidden p-2 text-text-secondary hover:text-text-primary"
+              className="md:hidden p-2 -mr-2 text-text-secondary hover:text-text-primary transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Menu"
               aria-expanded={mobileMenuOpen}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
             </button>
           </div>
         </div>
 
+        {/* Mobile menu */}
         <div
           className={cn(
-            "md:hidden border-t border-border/50",
-            "transition-all duration-300 overflow-hidden",
-            mobileMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0 border-t-0"
+            "md:hidden overflow-hidden transition-all duration-300",
+            mobileMenuOpen
+              ? "max-h-96 opacity-100"
+              : "max-h-0 opacity-0"
           )}
         >
-          <div className="px-4 py-3 space-y-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block px-3 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-surface/50 rounded-lg transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="pt-2 border-t border-border/50 space-y-2">
-              <div className="flex items-center gap-2 px-3">
-                <ThemeToggle />
-                <span className="text-sm text-text-secondary">Tema</span>
+          <div className="bg-background/95 backdrop-blur-xl border-t border-border/50">
+            <div className="max-w-7xl mx-auto px-4 py-4 space-y-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="block px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+
+              <div className="pt-3 mt-3 border-t border-border/50 space-y-2">
+                <Link
+                  href="/discord"
+                  className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <DiscordIcon className="w-4 h-4" />
+                  Discord
+                </Link>
+
+                <div className="px-1">
+                  <Button variant="primary" size="md" className="w-full">
+                    Entrar
+                  </Button>
+                </div>
               </div>
-              <Button variant="ghost" size="sm" className="w-full justify-center">
-                Entrar
-              </Button>
-              <Button variant="outline" size="sm" className="w-full justify-center">
-                <DiscordIcon className="w-4 h-4" />
-                Discord
-              </Button>
             </div>
           </div>
         </div>
