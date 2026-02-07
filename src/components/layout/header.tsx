@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CartButton } from "@/components/cart/cart-button";
 import { cn } from "@/lib/utils";
 
 const DISCORD_URL = "https://discord.gg/solarhub";
@@ -12,7 +13,6 @@ const DISCORD_URL = "https://discord.gg/solarhub";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/#products", label: "Cheats" },
-  { href: "/planos", label: "Planos" },
   { href: DISCORD_URL, label: "Suporte", external: true },
 ];
 
@@ -103,6 +103,8 @@ export function Header() {
                 Discord
               </a>
 
+              <CartButton />
+
               <div className="w-px h-5 bg-border/60" />
 
               <Link href="/login">
@@ -112,19 +114,22 @@ export function Header() {
               </Link>
             </div>
 
-            {/* Mobile toggle */}
-            <button
-              className="md:hidden p-2 -mr-2 text-text-secondary hover:text-text-primary transition-colors"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Menu"
-              aria-expanded={mobileMenuOpen}
-            >
+            {/* Mobile actions */}
+            <div className="flex md:hidden items-center gap-1">
+              <CartButton />
+              <button
+                className="p-2 -mr-2 text-text-secondary hover:text-text-primary transition-colors"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Menu"
+                aria-expanded={mobileMenuOpen}
+              >
               {mobileMenuOpen ? (
                 <X className="w-5 h-5" />
               ) : (
                 <Menu className="w-5 h-5" />
               )}
-            </button>
+              </button>
+            </div>
           </div>
         </div>
 

@@ -1,31 +1,34 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
-  ArrowRight,
-  ChevronDown,
-  Crosshair,
-  Eye,
-  Cpu,
-  Package,
-  Monitor,
+  X,
   Fingerprint,
-  Server,
-  Layers,
+  Crown,
+  Star,
+  Zap,
+  Clock,
 } from "lucide-react";
+import { useCart, parsePrice } from "@/context/cart-context";
 
 /* ────────────────────────────────────────────── */
 /*  Types                                          */
 /* ────────────────────────────────────────────── */
 
-interface Tool {
+interface Plan {
   name: string;
-  type: "ESP" | "Aim" | "Utility" | "Full Package";
-  description: string;
-  icon: typeof Crosshair;
+  price: string;
+  period: string;
+  badge?: string;
+  icon: typeof Clock;
+}
+
+interface PlanCategory {
+  label: string;
+  plans: Plan[];
 }
 
 interface Game {
@@ -33,11 +36,10 @@ interface Game {
   name: string;
   subtitle: string;
   image: string | null;
+  imagePosition?: string;
   accentColor: string;
   badge: string | null;
-  isSpoofer?: boolean;
-  compatibleGames?: string[];
-  tools: Tool[];
+  planCategories: PlanCategory[];
 }
 
 /* ────────────────────────────────────────────── */
@@ -49,13 +51,27 @@ const games: Game[] = [
     id: "valorant",
     name: "VALORANT",
     subtitle: "Tactical shooter",
-    image: "/sagevalorant.png",
+    image: "/VALORANT_JETT_LIGHT.jpg",
+    imagePosition: "center 10%",
     accentColor: "red",
     badge: "Popular",
-    tools: [
-      { name: "Aimbot Pro", type: "Aim", description: "Mira assistida com humanização e suavização avançada", icon: Crosshair },
-      { name: "Wallhack ESP", type: "ESP", description: "Visualize jogadores, agentes e armas através de paredes", icon: Eye },
-      { name: "Full Package", type: "Full Package", description: "Todos os recursos combinados em um único loader", icon: Package },
+    planCategories: [
+      {
+        label: "ESP",
+        plans: [
+          { name: "Diário", price: "R$25", period: "1 dia", icon: Clock },
+          { name: "Semanal", price: "R$60", period: "7 dias", icon: Zap },
+          { name: "Mensal", price: "R$120", period: "30 dias", badge: "Mais popular", icon: Star },
+        ],
+      },
+      {
+        label: "Skin Changer",
+        plans: [
+          { name: "Diário", price: "R$20", period: "1 dia", icon: Clock },
+          { name: "Semanal", price: "R$50", period: "7 dias", icon: Zap },
+          { name: "Mensal", price: "R$90", period: "30 dias", badge: "Melhor custo-benefício", icon: Star },
+        ],
+      },
     ],
   },
   {
@@ -65,10 +81,16 @@ const games: Game[] = [
     image: "/cs2.png",
     accentColor: "amber",
     badge: "Recomendado",
-    tools: [
-      { name: "Aimbot + Anti-Recoil", type: "Aim", description: "Sistema de mira com compensação automática de recuo", icon: Crosshair },
-      { name: "Wallhack + Radar", type: "ESP", description: "ESP completo com radar overlay discreto", icon: Eye },
-      { name: "Full Package", type: "Full Package", description: "Pacote completo com todas as ferramentas CS2", icon: Package },
+    planCategories: [
+      {
+        label: "",
+        plans: [
+          { name: "Diário", price: "R$5", period: "1 dia", icon: Clock },
+          { name: "Semanal", price: "R$25", period: "7 dias", icon: Zap },
+          { name: "Mensal", price: "R$40", period: "30 dias", badge: "Mais popular", icon: Star },
+          { name: "Lifetime", price: "R$200", period: "Para sempre", badge: "Melhor custo-benefício", icon: Crown },
+        ],
+      },
     ],
   },
   {
@@ -78,10 +100,15 @@ const games: Game[] = [
     image: "/fortnite.jpg",
     accentColor: "blue",
     badge: null,
-    tools: [
-      { name: "Aimbot Predictivo", type: "Aim", description: "Mira com predição de movimento e drop de projétil", icon: Crosshair },
-      { name: "ESP + Loot Finder", type: "ESP", description: "Visualize jogadores e itens raros em tempo real", icon: Eye },
-      { name: "Build Assist", type: "Utility", description: "Construção e edição rápida assistida por IA", icon: Cpu },
+    planCategories: [
+      {
+        label: "",
+        plans: [
+          { name: "Diário", price: "R$60", period: "1 dia", icon: Clock },
+          { name: "Semanal", price: "R$125", period: "7 dias", badge: "Mais popular", icon: Zap },
+          { name: "Mensal", price: "R$200", period: "30 dias", badge: "Melhor custo-benefício", icon: Star },
+        ],
+      },
     ],
   },
   {
@@ -89,12 +116,18 @@ const games: Game[] = [
     name: "DAYZ",
     subtitle: "Survival",
     image: "/Dayz.png",
+    imagePosition: "center 6%",
     accentColor: "emerald",
     badge: null,
-    tools: [
-      { name: "Player + Loot ESP", type: "ESP", description: "Veja jogadores, veículos, loot e bases no mapa", icon: Eye },
-      { name: "Aimbot Balístico", type: "Aim", description: "Mira com compensação de balística e queda de bala", icon: Crosshair },
-      { name: "Mapa Interativo", type: "Utility", description: "Overlay com pontos de interesse e rotas seguras", icon: Monitor },
+    planCategories: [
+      {
+        label: "",
+        plans: [
+          { name: "Diário", price: "R$30", period: "1 dia", icon: Clock },
+          { name: "Semanal", price: "R$65", period: "7 dias", icon: Zap },
+          { name: "Mensal", price: "R$150", period: "30 dias", badge: "Mais popular", icon: Star },
+        ],
+      },
     ],
   },
   {
@@ -104,40 +137,30 @@ const games: Game[] = [
     image: null,
     accentColor: "violet",
     badge: "Security Tool",
-    isSpoofer: true,
-    compatibleGames: ["Valorant", "CS2", "Fortnite", "DayZ", "EAC", "BattlEye", "Vanguard"],
-    tools: [
-      { name: "HWID Spoof", type: "Utility", description: "Spoof completo de hardware ID, serial e volume ID", icon: Fingerprint },
-      { name: "MAC Spoof", type: "Utility", description: "Alteração de endereço MAC de todos os adaptadores", icon: Server },
-      { name: "Full Clean", type: "Full Package", description: "Reset completo de ban com limpeza de registros", icon: Layers },
+    planCategories: [
+      {
+        label: "",
+        plans: [
+          { name: "Diário", price: "R$45", period: "1 dia", icon: Clock },
+          { name: "Semanal", price: "R$75", period: "7 dias", icon: Zap },
+          { name: "Mensal", price: "R$115", period: "30 dias", badge: "Mais popular", icon: Star },
+          { name: "Lifetime", price: "R$250", period: "Para sempre", badge: "Melhor custo-benefício", icon: Crown },
+        ],
+      },
     ],
   },
 ];
 
 /* ────────────────────────────────────────────── */
-/*  Color map (static strings for Tailwind JIT)    */
+/*  Accent color map                               */
 /* ────────────────────────────────────────────── */
 
-const colorMap: Record<string, {
-  gradient: string;
-  bg: string;
-  text: string;
-  border: string;
-  ring: string;
-  shadow: string;
-}> = {
-  red:     { gradient: "from-red-500/80 to-red-900/90",     bg: "bg-red-500/10",     text: "text-red-500",     border: "border-red-500/40",     ring: "ring-red-500/30",     shadow: "shadow-red-500/10" },
-  amber:   { gradient: "from-amber-500/80 to-amber-900/90", bg: "bg-amber-500/10",   text: "text-amber-500",   border: "border-amber-500/40",   ring: "ring-amber-500/30",   shadow: "shadow-amber-500/10" },
-  blue:    { gradient: "from-blue-500/80 to-blue-900/90",   bg: "bg-blue-500/10",    text: "text-blue-500",    border: "border-blue-500/40",    ring: "ring-blue-500/30",    shadow: "shadow-blue-500/10" },
-  emerald: { gradient: "from-emerald-500/80 to-emerald-900/90", bg: "bg-emerald-500/10", text: "text-emerald-500", border: "border-emerald-500/40", ring: "ring-emerald-500/30", shadow: "shadow-emerald-500/10" },
-  violet:  { gradient: "from-violet-500/80 to-violet-900/90", bg: "bg-violet-500/10",  text: "text-violet-500",  border: "border-violet-500/40",  ring: "ring-violet-500/30",  shadow: "shadow-violet-500/10" },
-};
-
-const typeColorMap: Record<string, string> = {
-  "ESP":          "bg-blue-500/15 text-blue-400 border-blue-500/25",
-  "Aim":          "bg-red-500/15 text-red-400 border-red-500/25",
-  "Utility":      "bg-amber-500/15 text-amber-400 border-amber-500/25",
-  "Full Package": "bg-accent/15 text-accent border-accent/25",
+const accentMap: Record<string, { border: string; glow: string; text: string; bg: string; badgeBg: string }> = {
+  red:     { border: "#ef4444", glow: "rgba(239,68,68,0.15)", text: "#f87171", bg: "rgba(239,68,68,0.08)",  badgeBg: "rgba(239,68,68,0.15)" },
+  amber:   { border: "#f59e0b", glow: "rgba(245,158,11,0.15)", text: "#fbbf24", bg: "rgba(245,158,11,0.08)", badgeBg: "rgba(245,158,11,0.15)" },
+  blue:    { border: "#3b82f6", glow: "rgba(59,130,246,0.15)", text: "#60a5fa", bg: "rgba(59,130,246,0.08)", badgeBg: "rgba(59,130,246,0.15)" },
+  emerald: { border: "#10b981", glow: "rgba(16,185,129,0.15)", text: "#34d399", bg: "rgba(16,185,129,0.08)", badgeBg: "rgba(16,185,129,0.15)" },
+  violet:  { border: "#8b5cf6", glow: "rgba(139,92,246,0.15)", text: "#a78bfa", bg: "rgba(139,92,246,0.08)", badgeBg: "rgba(139,92,246,0.15)" },
 };
 
 /* ────────────────────────────────────────────── */
@@ -173,35 +196,15 @@ function useScrollReveal() {
 }
 
 /* ────────────────────────────────────────────── */
-/*  Game Card                                      */
+/*  Game Card (click to open modal)                */
 /* ────────────────────────────────────────────── */
 
-function GameCard({
-  game,
-  isOpen,
-  onToggle,
-}: {
-  game: Game;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
-  const colors = colorMap[game.accentColor];
-  const contentRef = useRef<HTMLDivElement>(null);
-
+function GameCard({ game, onClick }: { game: Game; onClick: () => void }) {
   return (
-    <div
-      className={cn(
-        "game-card group relative rounded-2xl overflow-hidden",
-        "border transition-all duration-500",
-        isOpen
-          ? cn("border-border/60", colors.shadow, "shadow-lg")
-          : "border-border/30 hover:border-border/60"
-      )}
-    >
-      {/* ── Game cover (clickable) ── */}
+    <div className="game-card group relative rounded-2xl overflow-hidden border border-border/30 hover:border-border/60 transition-all duration-500 cursor-pointer">
       <button
-        onClick={onToggle}
-        className="relative w-full h-48 sm:h-56 overflow-hidden cursor-pointer text-left"
+        onClick={onClick}
+        className="relative w-full h-48 sm:h-56 overflow-hidden text-left"
       >
         {/* Image or gradient fallback */}
         {game.image ? (
@@ -209,10 +212,8 @@ function GameCard({
             src={game.image}
             alt={game.name}
             fill
-            className={cn(
-              "object-cover transition-transform duration-700",
-              isOpen ? "scale-105" : "group-hover:scale-105"
-            )}
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            style={game.imagePosition ? { objectPosition: game.imagePosition } : undefined}
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-[#0a0a0b] to-violet-950/50">
@@ -226,15 +227,12 @@ function GameCard({
           </div>
         )}
 
-        {/* Dark overlay gradient */}
-        <div className={cn(
-          "absolute inset-0 bg-gradient-to-t to-transparent",
-          isOpen ? colors.gradient : "from-black/80 via-black/40"
-        )} />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-        {/* Content over the image */}
+        {/* Content */}
         <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-between">
-          {/* Top row — badges */}
+          {/* Badges */}
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full bg-black/40 backdrop-blur-sm text-emerald-400 border border-emerald-500/30">
@@ -259,7 +257,7 @@ function GameCard({
             )}
           </div>
 
-          {/* Bottom row — name + action */}
+          {/* Name + CTA hint */}
           <div className="flex items-end justify-between">
             <div>
               <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
@@ -269,89 +267,236 @@ function GameCard({
                 {game.subtitle}
               </p>
             </div>
-            <div className={cn(
-              "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300",
-              "bg-white/10 backdrop-blur-sm border border-white/20",
-              isOpen && "rotate-180 bg-white/20"
-            )}>
-              <ChevronDown className="w-5 h-5 text-white" />
+            <div className="px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-semibold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Ver planos
             </div>
           </div>
         </div>
       </button>
+    </div>
+  );
+}
 
-      {/* ── Expandable tools panel ── */}
+/* ────────────────────────────────────────────── */
+/*  Plans Modal                                    */
+/* ────────────────────────────────────────────── */
+
+function PlansModal({
+  game,
+  onClose,
+}: {
+  game: Game;
+  onClose: () => void;
+}) {
+  const [closing, setClosing] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(0);
+  const colors = accentMap[game.accentColor];
+  const { addItem } = useCart();
+
+  const handleClose = useCallback(() => {
+    setClosing(true);
+    setTimeout(onClose, 150);
+  }, [onClose]);
+
+  /* Close on Escape */
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleClose();
+    };
+    document.addEventListener("keydown", handler);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handler);
+      document.body.style.overflow = "";
+    };
+  }, [handleClose]);
+
+  const currentCategory = game.planCategories[activeCategory];
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
       <div
-        ref={contentRef}
-        className="overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        className={cn(
+          "absolute inset-0 bg-black/70 backdrop-blur-sm",
+          closing ? "modal-overlay-exit" : "modal-overlay-enter"
+        )}
+        onClick={handleClose}
+      />
+
+      {/* Modal */}
+      <div
+        className={cn(
+          "relative w-full max-w-lg rounded-2xl overflow-hidden",
+          closing ? "modal-content-exit" : "modal-content-enter"
+        )}
         style={{
-          maxHeight: isOpen ? `${contentRef.current?.scrollHeight ?? 600}px` : "0px",
-          opacity: isOpen ? 1 : 0,
+          background: "#111113",
+          border: `1px solid #27272a`,
+          boxShadow: `0 0 60px ${colors.glow}`,
         }}
       >
-        <div className="p-5 sm:p-6 bg-surface/40 backdrop-blur-sm border-t border-border/30">
-          {/* Spoofer compatibility row */}
-          {game.isSpoofer && game.compatibleGames && (
-            <div className="mb-5 pb-5 border-b border-border/30">
-              <p className="text-xs text-text-secondary uppercase tracking-wider font-semibold mb-2.5">
-                Compatível com
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {game.compatibleGames.map((g) => (
-                  <span
-                    key={g}
-                    className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/20"
-                  >
-                    {g}
-                  </span>
-                ))}
+        {/* Header with image */}
+        <div className="relative h-36 sm:h-40 overflow-hidden">
+          {game.image ? (
+            <Image
+              src={game.image}
+              alt={game.name}
+              fill
+              className="object-cover"
+              style={game.imagePosition ? { objectPosition: game.imagePosition } : undefined}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-[#0a0a0b] to-violet-950/50">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <Fingerprint className="w-20 h-20 text-violet-500/20" />
               </div>
             </div>
           )}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-[#111113]/60 to-transparent" />
 
-          {/* Tools grid */}
-          <div className="grid sm:grid-cols-3 gap-3">
-            {game.tools.map((tool) => (
-              <div
-                key={tool.name}
-                className="group/tool relative p-4 rounded-xl bg-background/60 border border-border/40 hover:border-border/70 transition-all duration-200 hover:shadow-sm"
+          {/* Close button */}
+          <button
+            onClick={handleClose}
+            className="absolute top-3 right-3 w-8 h-8 rounded-lg flex items-center justify-center transition-colors duration-150"
+            style={{ background: "rgba(0,0,0,0.5)", color: "#a1a1aa" }}
+          >
+            <X className="w-4 h-4" />
+          </button>
+
+          {/* Game info overlay */}
+          <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
+            <div>
+              <h2 className="text-2xl font-black text-white tracking-tight">{game.name}</h2>
+              <p className="text-sm font-medium mt-0.5" style={{ color: "#71717a" }}>{game.subtitle}</p>
+            </div>
+            <div className="flex gap-1.5">
+              <span
+                className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full"
+                style={{ background: "rgba(16,185,129,0.15)", color: "#34d399", border: "1px solid rgba(16,185,129,0.3)" }}
               >
-                {/* Tool icon + type */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className={cn(
-                    "w-9 h-9 rounded-lg flex items-center justify-center",
-                    colors.bg
-                  )}>
-                    <tool.icon className={cn("w-4 h-4", colors.text)} />
-                  </div>
-                  <span className={cn(
-                    "px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border",
-                    typeColorMap[tool.type]
-                  )}>
-                    {tool.type}
-                  </span>
-                </div>
+                Undetected
+              </span>
+              <span
+                className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full"
+                style={{ background: "rgba(16,185,129,0.15)", color: "#34d399", border: "1px solid rgba(16,185,129,0.3)" }}
+              >
+                Atualizado
+              </span>
+            </div>
+          </div>
+        </div>
 
-                <h4 className="text-sm font-bold text-text-primary mb-1">
-                  {tool.name}
-                </h4>
-                <p className="text-xs text-text-secondary leading-relaxed">
-                  {tool.description}
-                </p>
-              </div>
+        {/* Category tabs (if multiple) */}
+        {game.planCategories.length > 1 && (
+          <div className="flex px-5 pt-4 gap-2">
+            {game.planCategories.map((cat, i) => (
+              <button
+                key={cat.label}
+                type="button"
+                onClick={() => setActiveCategory(i)}
+                className="px-4 py-2 text-[13px] font-semibold rounded-lg transition-all duration-200"
+                style={{
+                  background: activeCategory === i ? colors.bg : "transparent",
+                  color: activeCategory === i ? colors.text : "#71717a",
+                  border: `1px solid ${activeCategory === i ? colors.border : "transparent"}`,
+                }}
+              >
+                {cat.label}
+              </button>
             ))}
           </div>
+        )}
 
-          {/* CTA inside expanded panel */}
-          <div className="mt-5 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <Button variant="primary" size="md" className="flex-1 sm:flex-none">
-              Ver detalhes
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-            <Button variant="ghost" size="md" className="flex-1 sm:flex-none">
-              Comparar planos
-            </Button>
-          </div>
+        {/* Plans grid */}
+        <div className="p-5 space-y-3">
+          {currentCategory.plans.map((plan) => {
+            const isFeatured = plan.badge === "Mais popular";
+            const isBestValue = plan.badge === "Melhor custo-benefício";
+            const isHighlighted = isFeatured || isBestValue;
+
+            return (
+              <div
+                key={plan.name}
+                className="plan-card relative rounded-xl p-4 flex items-center justify-between gap-4"
+                style={{
+                  background: isHighlighted ? colors.bg : "#1a1a1d",
+                  border: `1px solid ${isHighlighted ? colors.border : "#27272a"}`,
+                  boxShadow: isHighlighted ? `0 0 20px ${colors.glow}` : "none",
+                }}
+              >
+                <div className="flex items-center gap-3.5 min-w-0">
+                  {/* Icon */}
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: colors.bg }}
+                  >
+                    <plan.icon className="w-4 h-4" style={{ color: colors.text }} />
+                  </div>
+
+                  {/* Name + period */}
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold" style={{ color: "#fafafa" }}>
+                        {plan.name}
+                      </span>
+                      {plan.badge && (
+                        <span
+                          className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-full shrink-0"
+                          style={{
+                            background: isFeatured ? "rgba(249,115,22,0.15)" : colors.badgeBg,
+                            color: isFeatured ? "#f97316" : colors.text,
+                            border: `1px solid ${isFeatured ? "rgba(249,115,22,0.3)" : colors.border}`,
+                          }}
+                        >
+                          {plan.badge}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[12px] mt-0.5" style={{ color: "#71717a" }}>
+                      {plan.period}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Price + buy */}
+                <div className="flex items-center gap-3 shrink-0">
+                  <span className="text-lg font-extrabold" style={{ color: "#f97316" }}>
+                    {plan.price}
+                  </span>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => {
+                      const categoryLabel = currentCategory.label;
+                      const productName = categoryLabel
+                        ? `${game.name} ${categoryLabel}`
+                        : game.name;
+                      addItem({
+                        id: `${game.id}-${categoryLabel || "default"}-${plan.name}`.toLowerCase(),
+                        productName,
+                        planName: plan.name,
+                        period: plan.period,
+                        price: plan.price,
+                        priceValue: parsePrice(plan.price),
+                        accentColor: game.accentColor,
+                        image: game.image,
+                      });
+                    }}
+                  >
+                    Comprar
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Footer note */}
+        <div className="px-5 pb-5">
+          <p className="text-[11px] text-center leading-relaxed" style={{ color: "#52525b" }}>
+            Pagamento seguro via PIX ou cartão. Ativação instantânea após confirmação.
+          </p>
         </div>
       </div>
     </div>
@@ -359,63 +504,67 @@ function GameCard({
 }
 
 /* ────────────────────────────────────────────── */
-/*  Products Section (Game Hub)                    */
+/*  Products Section                               */
 /* ────────────────────────────────────────────── */
 
 export function Products() {
   const sectionRef = useScrollReveal();
-  const [openGameId, setOpenGameId] = useState<string | null>(null);
-
-  const handleToggle = (id: string) => {
-    setOpenGameId((prev) => (prev === id ? null : id));
-  };
+  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
 
   return (
-    <section
-      id="products"
-      ref={sectionRef as React.RefObject<HTMLElement>}
-      className="relative py-24 sm:py-32"
-    >
-      {/* Background */}
-      <div className="absolute inset-0 bg-surface/20" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-accent/[0.03] rounded-full blur-[140px]" />
+    <>
+      <section
+        id="products"
+        ref={sectionRef as React.RefObject<HTMLElement>}
+        className="relative py-24 sm:py-32"
+      >
+        {/* Background */}
+        <div className="absolute inset-0 bg-surface/20" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-accent/[0.03] rounded-full blur-[140px]" />
 
-      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 section-fade-in">
-          <span className="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent bg-accent/10 rounded-full mb-4 border border-accent/20">
-            Cheats
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-text-primary">
-            Escolha sua{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
-              ferramenta
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 section-fade-in">
+            <span className="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent bg-accent/10 rounded-full mb-4 border border-accent/20">
+              Cheats
             </span>
-          </h2>
-          <p className="mt-4 text-base sm:text-lg text-text-secondary leading-relaxed">
-            Selecione um jogo para explorar as ferramentas disponíveis.
-            <br className="hidden sm:block" />
-            Todos os scripts atualizados e 100% indetectáveis.
-          </p>
-        </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-text-primary">
+              Escolha sua{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
+                ferramenta
+              </span>
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-text-secondary leading-relaxed">
+              Selecione um jogo para explorar as ferramentas disponíveis.
+              <br className="hidden sm:block" />
+              Todos os scripts atualizados e 100% indetectáveis.
+            </p>
+          </div>
 
-        {/* Game Cards Stack */}
-        <div className="space-y-4">
-          {games.map((game, index) => (
-            <div
-              key={game.id}
-              className={cn("section-fade-in", `section-delay-${index + 1}`)}
-            >
-              <GameCard
-                game={game}
-                isOpen={openGameId === game.id}
-                onToggle={() => handleToggle(game.id)}
-              />
-            </div>
-          ))}
+          {/* Game Cards */}
+          <div className="space-y-4">
+            {games.map((game, index) => (
+              <div
+                key={game.id}
+                className={cn("section-fade-in", `section-delay-${index + 1}`)}
+              >
+                <GameCard
+                  game={game}
+                  onClick={() => setSelectedGame(game)}
+                />
+              </div>
+            ))}
+          </div>
         </div>
+      </section>
 
-      </div>
-    </section>
+      {/* Plans modal */}
+      {selectedGame && (
+        <PlansModal
+          game={selectedGame}
+          onClose={() => setSelectedGame(null)}
+        />
+      )}
+    </>
   );
 }
