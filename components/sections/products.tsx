@@ -347,13 +347,13 @@ function PlansModal({
               style={game.imagePosition ? { objectPosition: game.imagePosition } : undefined}
             />
           ) : (
-            <div className="absolute inset-0 bg-linear-to-br from-violet-950 via-[#0a0a0b] to-violet-950/50">
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-[#0a0a0b] to-violet-950/50">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <Fingerprint className="w-20 h-20 text-violet-500/20" />
               </div>
             </div>
           )}
-          <div className="absolute inset-0 bg-linear-to-t from-[#111113] via-[#111113]/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-[#111113]/60 to-transparent" />
 
           {/* Close button */}
           <button
@@ -520,7 +520,7 @@ export function Products() {
       >
         {/* Background */}
         <div className="absolute inset-0 bg-surface/20" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-175 h-125 bg-accent/3 rounded-full blur-[140px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-accent/[0.03] rounded-full blur-[140px]" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
@@ -530,7 +530,7 @@ export function Products() {
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-text-primary">
               Escolha sua{" "}
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-amber-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
                 ferramenta
               </span>
             </h2>

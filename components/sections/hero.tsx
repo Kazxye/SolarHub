@@ -21,6 +21,9 @@ export function Hero() {
 
           {/* ── JETT — Centered, dominant, z-[10] ── */}
           <div className="relative z-[10] hero-fade-in hero-delay-2 flex items-end justify-center" style={{ height: "100vh" }}>
+            {/* Accent rings */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-accent/10" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full border border-accent/[0.06]" />
 
             {/* Radial glow behind Jett */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-radial from-accent/15 to-transparent rounded-full blur-3xl" />
@@ -75,80 +78,80 @@ export function Hero() {
             </div>
           </div>
 
-          {/*/!* ── FLOATING STAT CARDS — scattered organically ── *!/*/}
-          {/*<div className="absolute inset-0 z-[20] pointer-events-none">*/}
-          {/*  /!* Card: 0.3ms — top-left area *!/*/}
-          {/*  <div className="absolute top-[14%] left-[6%] hero-fade-in hero-delay-4 pointer-events-auto">*/}
-          {/*    <div*/}
-          {/*      className="glass-card glass-float-1 px-4 py-3"*/}
-          {/*      style={{ boxShadow: "0 0 20px rgba(249, 115, 22, 0.08), 0 4px 20px rgba(0, 0, 0, 0.2)" }}*/}
-          {/*    >*/}
-          {/*      <div className="flex items-center gap-2 mb-1.5">*/}
-          {/*        <Zap className="w-3.5 h-3.5 text-accent" />*/}
-          {/*        <span className="text-[10px] text-text-secondary uppercase tracking-wider font-medium">*/}
-          {/*          Latência de execução*/}
-          {/*        </span>*/}
-          {/*      </div>*/}
-          {/*      <div className="text-2xl font-bold text-text-primary font-mono tracking-tight">*/}
-          {/*        0.3<span className="text-sm text-text-secondary font-normal ml-0.5">ms</span>*/}
-          {/*      </div>*/}
-          {/*    </div>*/}
-          {/*  </div>*/}
+          {/* ── FLOATING STAT CARDS — scattered organically ── */}
+          <div className="absolute inset-0 z-[20] pointer-events-none">
+            {/* Card: 0.3ms — top-left area */}
+            <div className="absolute top-[14%] left-[6%] hero-fade-in hero-delay-4 pointer-events-auto">
+              <div
+                className="glass-card glass-float-1 px-4 py-3"
+                style={{ boxShadow: "0 0 20px rgba(249, 115, 22, 0.08), 0 4px 20px rgba(0, 0, 0, 0.2)" }}
+              >
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Zap className="w-3.5 h-3.5 text-accent" />
+                  <span className="text-[10px] text-text-secondary uppercase tracking-wider font-medium">
+                    Latência de execução
+                  </span>
+                </div>
+                <div className="text-2xl font-bold text-text-primary font-mono tracking-tight">
+                  0.3<span className="text-sm text-text-secondary font-normal ml-0.5">ms</span>
+                </div>
+              </div>
+            </div>
 
-          {/*  /!* Card: 100% — top-right area *!/*/}
-          {/*  <div className="absolute top-[18%] right-[6%] hero-fade-in hero-delay-5 pointer-events-auto">*/}
-          {/*    <div*/}
-          {/*      className="glass-card glass-float-2 px-4 py-3"*/}
-          {/*      style={{ boxShadow: "0 0 20px rgba(16, 185, 129, 0.08), 0 4px 20px rgba(0, 0, 0, 0.2)" }}*/}
-          {/*    >*/}
-          {/*      <div className="flex items-center gap-2 mb-1.5">*/}
-          {/*        <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />*/}
-          {/*        <span className="text-[10px] text-text-secondary uppercase tracking-wider font-medium">*/}
-          {/*          Anti-detecção*/}
-          {/*        </span>*/}
-          {/*      </div>*/}
-          {/*      <div className="text-2xl font-bold text-text-primary font-mono tracking-tight">*/}
-          {/*        100<span className="text-sm text-text-secondary font-normal ml-0.5">%</span>*/}
-          {/*      </div>*/}
-          {/*    </div>*/}
-          {/*  </div>*/}
+            {/* Card: 100% — top-right area */}
+            <div className="absolute top-[18%] right-[6%] hero-fade-in hero-delay-5 pointer-events-auto">
+              <div
+                className="glass-card glass-float-2 px-4 py-3"
+                style={{ boxShadow: "0 0 20px rgba(16, 185, 129, 0.08), 0 4px 20px rgba(0, 0, 0, 0.2)" }}
+              >
+                <div className="flex items-center gap-2 mb-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                  <span className="text-[10px] text-text-secondary uppercase tracking-wider font-medium">
+                    Anti-detecção
+                  </span>
+                </div>
+                <div className="text-2xl font-bold text-text-primary font-mono tracking-tight">
+                  100<span className="text-sm text-text-secondary font-normal ml-0.5">%</span>
+                </div>
+              </div>
+            </div>
 
-          {/*  /!* Card: <2h — mid-right *!/*/}
-          {/*  <div className="absolute top-[50%] right-[4%] hero-fade-in hero-delay-6 pointer-events-auto">*/}
-          {/*    <div*/}
-          {/*      className="glass-card glass-float-3 px-4 py-3"*/}
-          {/*      style={{ boxShadow: "0 0 20px rgba(59, 130, 246, 0.08), 0 4px 20px rgba(0, 0, 0, 0.2)" }}*/}
-          {/*    >*/}
-          {/*      <div className="flex items-center gap-2 mb-1.5">*/}
-          {/*        <RefreshCw className="w-3.5 h-3.5 text-blue-500" />*/}
-          {/*        <span className="text-[10px] text-text-secondary uppercase tracking-wider font-medium">*/}
-          {/*          Atualizações após patch*/}
-          {/*        </span>*/}
-          {/*      </div>*/}
-          {/*      <div className="text-2xl font-bold text-text-primary font-mono tracking-tight">*/}
-          {/*        &lt;2<span className="text-sm text-text-secondary font-normal ml-0.5">h</span>*/}
-          {/*      </div>*/}
-          {/*    </div>*/}
-          {/*  </div>*/}
+            {/* Card: <2h — mid-right */}
+            <div className="absolute top-[50%] right-[4%] hero-fade-in hero-delay-6 pointer-events-auto">
+              <div
+                className="glass-card glass-float-3 px-4 py-3"
+                style={{ boxShadow: "0 0 20px rgba(59, 130, 246, 0.08), 0 4px 20px rgba(0, 0, 0, 0.2)" }}
+              >
+                <div className="flex items-center gap-2 mb-1.5">
+                  <RefreshCw className="w-3.5 h-3.5 text-blue-500" />
+                  <span className="text-[10px] text-text-secondary uppercase tracking-wider font-medium">
+                    Atualizações após patch
+                  </span>
+                </div>
+                <div className="text-2xl font-bold text-text-primary font-mono tracking-tight">
+                  &lt;2<span className="text-sm text-text-secondary font-normal ml-0.5">h</span>
+                </div>
+              </div>
+            </div>
 
-          {/*  /!* Card: 10k+ — mid-left *!/*/}
-          {/*  <div className="absolute top-[48%] left-[4%] hero-fade-in pointer-events-auto" style={{ animationDelay: "1.3s" }}>*/}
-          {/*    <div*/}
-          {/*      className="glass-card glass-float-4 px-4 py-3"*/}
-          {/*      style={{ boxShadow: "0 0 20px rgba(139, 92, 246, 0.08), 0 4px 20px rgba(0, 0, 0, 0.2)" }}*/}
-          {/*    >*/}
-          {/*      <div className="flex items-center gap-2 mb-1.5">*/}
-          {/*        <Users className="w-3.5 h-3.5 text-violet-500" />*/}
-          {/*        <span className="text-[10px] text-text-secondary uppercase tracking-wider font-medium">*/}
-          {/*          Jogadores ativos*/}
-          {/*        </span>*/}
-          {/*      </div>*/}
-          {/*      <div className="text-2xl font-bold text-text-primary font-mono tracking-tight">*/}
-          {/*        10K<span className="text-sm text-text-secondary font-normal ml-0.5">+</span>*/}
-          {/*      </div>*/}
-          {/*    </div>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+            {/* Card: 10k+ — mid-left */}
+            <div className="absolute top-[48%] left-[4%] hero-fade-in pointer-events-auto" style={{ animationDelay: "1.3s" }}>
+              <div
+                className="glass-card glass-float-4 px-4 py-3"
+                style={{ boxShadow: "0 0 20px rgba(139, 92, 246, 0.08), 0 4px 20px rgba(0, 0, 0, 0.2)" }}
+              >
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Users className="w-3.5 h-3.5 text-violet-500" />
+                  <span className="text-[10px] text-text-secondary uppercase tracking-wider font-medium">
+                    Jogadores ativos
+                  </span>
+                </div>
+                <div className="text-2xl font-bold text-text-primary font-mono tracking-tight">
+                  10K<span className="text-sm text-text-secondary font-normal ml-0.5">+</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* ── CTA + SUBHEADLINE — bottom-left anchored ── */}
           <div className="absolute bottom-[8vh] left-0 z-[20] max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8" style={{ left: "50%", transform: "translateX(-50%)" }}>
