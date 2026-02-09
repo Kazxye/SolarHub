@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CartButton } from "@/components/cart/cart-button";
 import { cn } from "@/lib/utils";
 
 const DISCORD_URL = "https://discord.gg/solarhub";
@@ -103,8 +102,6 @@ export function Header() {
                 Discord
               </a>
 
-              <CartButton />
-
               <div className="w-px h-5 bg-border/60" />
 
               <Link href="/login">
@@ -114,9 +111,8 @@ export function Header() {
               </Link>
             </div>
 
-            {/* Mobile actions */}
+            {/* Mobile toggle */}
             <div className="flex md:hidden items-center gap-1">
-              <CartButton />
               <button
                 className="p-2 -mr-2 text-text-secondary hover:text-text-primary transition-colors"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

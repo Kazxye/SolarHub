@@ -16,9 +16,8 @@ function DiscordIcon({ className }: { className?: string }) {
 
 const footerLinks = {
   produto: [
-    { label: "Recursos", href: "/recursos" },
-    { label: "Preços", href: "/precos" },
-    { label: "FAQ", href: "/faq" },
+    { label: "Cheats", href: "/#products" },
+    { label: "Showcase", href: "/#showcase" },
   ],
   empresa: [
     { label: "Sobre", href: "/sobre" },
@@ -64,7 +63,7 @@ export function Footer() {
             <h4 className="font-semibold text-text-primary mb-4">Produto</h4>
             <ul className="space-y-2">
               {footerLinks.produto.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm text-text-secondary hover:text-text-primary transition-colors"

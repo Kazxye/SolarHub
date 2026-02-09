@@ -11,8 +11,8 @@ import {
   Star,
   Zap,
   Clock,
+  ExternalLink,
 } from "lucide-react";
-import { useCart, parsePrice } from "@/context/cart-context";
 
 /* ────────────────────────────────────────────── */
 /*  Types                                          */
@@ -45,6 +45,8 @@ interface Game {
 /* ────────────────────────────────────────────── */
 /*  Data                                           */
 /* ────────────────────────────────────────────── */
+
+const DISCORD_URL = "https://discord.gg/solarhub";
 
 const games: Game[] = [
   {
@@ -291,7 +293,6 @@ function PlansModal({
   const [closing, setClosing] = useState(false);
   const [activeCategory, setActiveCategory] = useState(0);
   const colors = accentMap[game.accentColor];
-  const { addItem } = useCart();
 
   const handleClose = useCallback(() => {
     setClosing(true);
@@ -459,33 +460,16 @@ function PlansModal({
                   </div>
                 </div>
 
-                {/* Price + buy */}
+                {/* Price + acquire */}
                 <div className="flex items-center gap-3 shrink-0">
                   <span className="text-lg font-extrabold" style={{ color: "#f97316" }}>
                     {plan.price}
                   </span>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => {
-                      const categoryLabel = currentCategory.label;
-                      const productName = categoryLabel
-                        ? `${game.name} ${categoryLabel}`
-                        : game.name;
-                      addItem({
-                        id: `${game.id}-${categoryLabel || "default"}-${plan.name}`.toLowerCase(),
-                        productName,
-                        planName: plan.name,
-                        period: plan.period,
-                        price: plan.price,
-                        priceValue: parsePrice(plan.price),
-                        accentColor: game.accentColor,
-                        image: game.image,
-                      });
-                    }}
-                  >
-                    Comprar
-                  </Button>
+                  <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">
+                    <Button variant="primary" size="sm">
+                      Adquirir
+                    </Button>
+                  </a>
                 </div>
               </div>
             );
@@ -494,9 +478,10 @@ function PlansModal({
 
         {/* Footer note */}
         <div className="px-5 pb-5">
-          <p className="text-[11px] text-center leading-relaxed" style={{ color: "#52525b" }}>
-            Pagamento seguro via PIX ou cartão. Ativação instantânea após confirmação.
-          </p>
+          <div className="flex items-center justify-center gap-2 text-[11px] leading-relaxed" style={{ color: "#52525b" }}>
+            <ExternalLink className="w-3 h-3" />
+            <span>Aquisição via Discord. Pagamento seguro via PIX ou cartão.</span>
+          </div>
         </div>
       </div>
     </div>

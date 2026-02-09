@@ -11,8 +11,8 @@ import {
   Star,
   Zap,
   Clock,
+  ExternalLink,
 } from "lucide-react";
-import { useCart, parsePrice } from "@/context/cart-context";
 
 /* ────────────────────────────────────────────── */
 /*  Types                                          */
@@ -45,6 +45,8 @@ interface Game {
 /* ────────────────────────────────────────────── */
 /*  Data                                           */
 /* ────────────────────────────────────────────── */
+
+const DISCORD_URL = "https://discord.gg/solarhub";
 
 const games: Game[] = [
   {
@@ -291,7 +293,6 @@ function PlansModal({
   const [closing, setClosing] = useState(false);
   const [activeCategory, setActiveCategory] = useState(0);
   const colors = accentMap[game.accentColor];
-  const { addItem } = useCart();
 
   const handleClose = useCallback(() => {
     setClosing(true);
@@ -347,13 +348,13 @@ function PlansModal({
               style={game.imagePosition ? { objectPosition: game.imagePosition } : undefined}
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-[#0a0a0b] to-violet-950/50">
+            <div className="absolute inset-0 bg-linear-to-br from-violet-950 via-[#0a0a0b] to-violet-950/50">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <Fingerprint className="w-20 h-20 text-violet-500/20" />
               </div>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-[#111113]/60 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-[#111113] via-[#111113]/60 to-transparent" />
 
           {/* Close button */}
           <button
@@ -459,33 +460,16 @@ function PlansModal({
                   </div>
                 </div>
 
-                {/* Price + buy */}
+                {/* Price + acquire */}
                 <div className="flex items-center gap-3 shrink-0">
                   <span className="text-lg font-extrabold" style={{ color: "#f97316" }}>
                     {plan.price}
                   </span>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => {
-                      const categoryLabel = currentCategory.label;
-                      const productName = categoryLabel
-                        ? `${game.name} ${categoryLabel}`
-                        : game.name;
-                      addItem({
-                        id: `${game.id}-${categoryLabel || "default"}-${plan.name}`.toLowerCase(),
-                        productName,
-                        planName: plan.name,
-                        period: plan.period,
-                        price: plan.price,
-                        priceValue: parsePrice(plan.price),
-                        accentColor: game.accentColor,
-                        image: game.image,
-                      });
-                    }}
-                  >
-                    Comprar
-                  </Button>
+                  <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">
+                    <Button variant="primary" size="sm">
+                      Adquirir
+                    </Button>
+                  </a>
                 </div>
               </div>
             );
@@ -494,9 +478,10 @@ function PlansModal({
 
         {/* Footer note */}
         <div className="px-5 pb-5">
-          <p className="text-[11px] text-center leading-relaxed" style={{ color: "#52525b" }}>
-            Pagamento seguro via PIX ou cartão. Ativação instantânea após confirmação.
-          </p>
+          <div className="flex items-center justify-center gap-2 text-[11px] leading-relaxed" style={{ color: "#52525b" }}>
+            <ExternalLink className="w-3 h-3" />
+            <span>Aquisição via Discord. Pagamento seguro via PIX ou cartão.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -520,7 +505,7 @@ export function Products() {
       >
         {/* Background */}
         <div className="absolute inset-0 bg-surface/20" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-accent/[0.03] rounded-full blur-[140px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-175 h-125 bg-accent/3 rounded-full blur-[140px]" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
@@ -530,7 +515,7 @@ export function Products() {
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-text-primary">
               Escolha sua{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-amber-500">
                 ferramenta
               </span>
             </h2>

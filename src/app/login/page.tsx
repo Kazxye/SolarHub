@@ -16,6 +16,23 @@ import {
 } from "lucide-react";
 
 /* ─── Password strength ─── */
+
+const strengthLevels = [
+  { level: 1, label: "Fraca", class: "bg-red-500" },
+  { level: 2, label: "Razoável", class: "bg-amber-500" },
+  { level: 3, label: "Boa", class: "bg-yellow-500" },
+  { level: 4, label: "Forte", class: "bg-green-500" },
+  { level: 5, label: "Excelente", class: "bg-emerald-400" },
+] as const;
+
+const strengthTextColors = [
+  "text-red-500",
+  "text-amber-500",
+  "text-yellow-500",
+  "text-green-500",
+  "text-emerald-400",
+];
+
 function getStrength(pw: string) {
   let s = 0;
   if (pw.length >= 6) s++;
@@ -23,14 +40,15 @@ function getStrength(pw: string) {
   if (/[A-Z]/.test(pw)) s++;
   if (/[0-9]/.test(pw)) s++;
   if (/[^A-Za-z0-9]/.test(pw)) s++;
-  if (s <= 1) return { level: 1, label: "Fraca", color: "#ef4444" };
-  if (s <= 2) return { level: 2, label: "Razoável", color: "#f59e0b" };
-  if (s <= 3) return { level: 3, label: "Boa", color: "#eab308" };
-  if (s <= 4) return { level: 4, label: "Forte", color: "#22c55e" };
-  return { level: 5, label: "Excelente", color: "#34d399" };
+  if (s <= 1) return 0;
+  if (s <= 2) return 1;
+  if (s <= 3) return 2;
+  if (s <= 4) return 3;
+  return 4;
 }
 
 /* ─── Discord icon ─── */
+
 function DiscordIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -40,7 +58,10 @@ function DiscordIcon({ className }: { className?: string }) {
 }
 
 /* ─── Types ─── */
+
 type AuthMode = "login" | "register";
+
+/* ─── Page ─── */
 
 export default function LoginPage() {
   const [mode, setMode] = useState<AuthMode>("login");
@@ -53,7 +74,8 @@ export default function LoginPage() {
   const [remember, setRemember] = useState(false);
 
   const isLogin = mode === "login";
-  const strength = useMemo(() => getStrength(password), [password]);
+  const strengthIndex = useMemo(() => getStrength(password), [password]);
+  const strength = strengthLevels[strengthIndex];
 
   const switchMode = useCallback((m: AuthMode) => {
     setMode(m);
@@ -63,35 +85,14 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#0a0a0b" }}>
+    <div className="min-h-screen flex flex-col bg-background">
       {/* ── Background effects ── */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-accent/[0.04] rounded-full blur-[140px]" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-[250px] bg-accent/[0.025] rounded-full blur-[120px]" />
         <div
-          className="absolute rounded-full blur-[140px]"
+          className="absolute inset-0 opacity-[0.03]"
           style={{
-            top: "15%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: 700,
-            height: 500,
-            background: "rgba(249, 115, 22, 0.04)",
-          }}
-        />
-        <div
-          className="absolute rounded-full blur-[120px]"
-          style={{
-            bottom: 0,
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: 900,
-            height: 250,
-            background: "rgba(249, 115, 22, 0.025)",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            opacity: 0.03,
             backgroundImage:
               "linear-gradient(#27272a 1px, transparent 1px), linear-gradient(90deg, #27272a 1px, transparent 1px)",
             backgroundSize: "60px 60px",
@@ -104,16 +105,15 @@ export default function LoginPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm transition-colors duration-200"
-            style={{ color: "#a1a1aa" }}
+            className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors duration-200"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="hidden sm:inline">Voltar ao início</span>
           </Link>
           <Link href="/" className="inline-flex items-center gap-2">
             <Image src="/icon.png" alt="SolarHub" width={24} height={24} className="w-6 h-6" />
-            <span className="text-sm font-bold tracking-tight" style={{ color: "#fafafa" }}>
-              Solar<span style={{ color: "#f97316" }}>Hub</span>
+            <span className="text-sm font-bold tracking-tight text-text-primary">
+              Solar<span className="text-accent">Hub</span>
             </span>
           </Link>
         </div>
@@ -121,16 +121,13 @@ export default function LoginPage() {
 
       {/* ── Centered card ── */}
       <div className="relative z-10 flex-1 flex items-center justify-center px-4 py-6 sm:py-10">
-        <div className="w-full" style={{ maxWidth: 420 }}>
+        <div className="w-full max-w-[420px]">
           {/* Heading */}
-          <div className="text-center mb-7">
-            <h1
-              className="text-[26px] sm:text-3xl font-extrabold tracking-tight"
-              style={{ color: "#fafafa" }}
-            >
+          <div className="text-center mb-7 auth-fade-in">
+            <h1 className="text-[26px] sm:text-3xl font-extrabold tracking-tight text-text-primary">
               {isLogin ? "Bem-vindo de volta" : "Crie sua conta"}
             </h1>
-            <p className="mt-2 text-sm leading-relaxed" style={{ color: "#a1a1aa" }}>
+            <p className="mt-2 text-sm leading-relaxed text-text-secondary">
               {isLogin
                 ? "Acesse sua conta para continuar dominando"
                 : "Junte-se à comunidade e comece agora"}
@@ -138,16 +135,9 @@ export default function LoginPage() {
           </div>
 
           {/* Card */}
-          <div
-            className="rounded-2xl overflow-hidden"
-            style={{
-              background: "#111113",
-              border: "1px solid #27272a",
-              boxShadow: "0 0 50px rgba(249, 115, 22, 0.04)",
-            }}
-          >
+          <div className="rounded-2xl overflow-hidden bg-surface border border-border auth-card-glow auth-fade-in auth-delay-1">
             {/* ── Tabs ── */}
-            <div className="flex" style={{ borderBottom: "1px solid #27272a" }}>
+            <div className="flex border-b border-border">
               {(["login", "register"] as AuthMode[]).map((tab) => {
                 const active = mode === tab;
                 return (
@@ -155,18 +145,16 @@ export default function LoginPage() {
                     key={tab}
                     type="button"
                     onClick={() => switchMode(tab)}
-                    className="flex-1 py-3.5 text-[13px] font-semibold tracking-wide uppercase relative transition-colors duration-200"
-                    style={{
-                      color: active ? "#fafafa" : "#71717a",
-                      background: active ? "rgba(26, 26, 29, 0.5)" : "transparent",
-                    }}
+                    className={cn(
+                      "flex-1 py-3.5 text-[13px] font-semibold tracking-wide uppercase relative transition-colors duration-200",
+                      active
+                        ? "text-text-primary bg-surface-hover/50"
+                        : "text-text-secondary hover:text-text-primary"
+                    )}
                   >
                     {tab === "login" ? "Login" : "Criar conta"}
                     {active && (
-                      <span
-                        className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] rounded-full"
-                        style={{ width: 56, background: "#f97316" }}
-                      />
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-14 h-[2px] rounded-full bg-accent" />
                     )}
                   </button>
                 );
@@ -174,8 +162,8 @@ export default function LoginPage() {
             </div>
 
             {/* ── Form ── */}
-            <div className="p-6 sm:p-7">
-              <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
+            <div className="p-6 sm:p-7" key={mode}>
+              <form onSubmit={(e) => e.preventDefault()} className="space-y-5 auth-content-enter">
                 {/* Username (register) */}
                 {!isLogin && (
                   <InputField
@@ -213,8 +201,7 @@ export default function LoginPage() {
                       type="button"
                       tabIndex={-1}
                       onClick={() => setShowPw((p) => !p)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 transition-colors duration-150"
-                      style={{ color: "#71717a" }}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors duration-150"
                     >
                       {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -225,26 +212,24 @@ export default function LoginPage() {
                 {!isLogin && password.length > 0 && (
                   <div className="space-y-1.5">
                     <div className="flex gap-1.5">
-                      {[1, 2, 3, 4, 5].map((i) => (
+                      {[0, 1, 2, 3, 4].map((i) => (
                         <div
                           key={i}
-                          className="h-1 flex-1 rounded-full overflow-hidden"
-                          style={{ background: "#27272a" }}
+                          className="h-1 flex-1 rounded-full overflow-hidden bg-border"
                         >
                           <div
-                            className="h-full rounded-full"
-                            style={{
-                              width: i <= strength.level ? "100%" : "0%",
-                              background: i <= strength.level ? strength.color : "transparent",
-                              transition: "width 0.3s, background-color 0.3s",
-                            }}
+                            className={cn(
+                              "h-full rounded-full strength-bar-fill",
+                              i <= strengthIndex ? strength.class : "bg-transparent"
+                            )}
+                            style={{ width: i <= strengthIndex ? "100%" : "0%" }}
                           />
                         </div>
                       ))}
                     </div>
-                    <p className="text-[11px]" style={{ color: "#71717a" }}>
+                    <p className="text-[11px] text-text-secondary">
                       Força:{" "}
-                      <span className="font-semibold" style={{ color: strength.color }}>
+                      <span className={cn("font-semibold", strengthTextColors[strengthIndex])}>
                         {strength.label}
                       </span>
                     </p>
@@ -266,8 +251,7 @@ export default function LoginPage() {
                         type="button"
                         tabIndex={-1}
                         onClick={() => setShowPw((p) => !p)}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 transition-colors duration-150"
-                        style={{ color: "#71717a" }}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors duration-150"
                       >
                         {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -282,11 +266,12 @@ export default function LoginPage() {
                       <button
                         type="button"
                         onClick={() => setRemember((r) => !r)}
-                        className="w-[18px] h-[18px] rounded-[5px] flex items-center justify-center transition-all duration-150"
-                        style={{
-                          background: remember ? "#f97316" : "transparent",
-                          border: `2px solid ${remember ? "#f97316" : "#3f3f46"}`,
-                        }}
+                        className={cn(
+                          "w-[18px] h-[18px] rounded-[5px] flex items-center justify-center transition-all duration-150 border-2",
+                          remember
+                            ? "bg-accent border-accent"
+                            : "bg-transparent border-zinc-700 hover:border-zinc-500"
+                        )}
                       >
                         {remember && (
                           <svg
@@ -302,14 +287,13 @@ export default function LoginPage() {
                           </svg>
                         )}
                       </button>
-                      <span className="text-[13px] select-none" style={{ color: "#a1a1aa" }}>
+                      <span className="text-[13px] select-none text-text-secondary">
                         Lembrar-me
                       </span>
                     </label>
                     <button
                       type="button"
-                      className="text-[13px] font-medium transition-colors duration-150"
-                      style={{ color: "#f97316" }}
+                      className="text-[13px] font-medium text-accent hover:text-accent-hover transition-colors duration-150"
                     >
                       Esqueci minha senha
                     </button>
@@ -329,35 +313,17 @@ export default function LoginPage() {
 
               {/* ── Divider ── */}
               <div className="my-6 flex items-center gap-4">
-                <div className="flex-1 h-px" style={{ background: "#27272a" }} />
-                <span
-                  className="text-[11px] uppercase tracking-wider font-medium"
-                  style={{ color: "#71717a" }}
-                >
+                <div className="flex-1 h-px bg-border" />
+                <span className="text-[11px] uppercase tracking-wider font-medium text-text-secondary">
                   ou continue com
                 </span>
-                <div className="flex-1 h-px" style={{ background: "#27272a" }} />
+                <div className="flex-1 h-px bg-border" />
               </div>
 
               {/* ── Discord ── */}
               <button
                 type="button"
-                className="w-full inline-flex items-center justify-center gap-2.5 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200"
-                style={{
-                  background: "rgba(88, 101, 242, 0.12)",
-                  color: "#7289DA",
-                  border: "1px solid rgba(88, 101, 242, 0.25)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "#5865F2";
-                  e.currentTarget.style.color = "#ffffff";
-                  e.currentTarget.style.borderColor = "#5865F2";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "rgba(88, 101, 242, 0.12)";
-                  e.currentTarget.style.color = "#7289DA";
-                  e.currentTarget.style.borderColor = "rgba(88, 101, 242, 0.25)";
-                }}
+                className="w-full inline-flex items-center justify-center gap-2.5 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 bg-[#5865F2]/10 text-[#7289DA] border border-[#5865F2]/25 hover:bg-[#5865F2] hover:text-white hover:border-[#5865F2]"
               >
                 <DiscordIcon className="w-[18px] h-[18px]" />
                 Continuar com Discord
@@ -365,15 +331,9 @@ export default function LoginPage() {
 
               {/* Security note (register) */}
               {!isLogin && (
-                <div
-                  className="mt-5 flex items-start gap-2.5 p-3.5 rounded-xl"
-                  style={{
-                    background: "rgba(34, 197, 94, 0.06)",
-                    border: "1px solid rgba(34, 197, 94, 0.15)",
-                  }}
-                >
-                  <ShieldCheck className="w-4 h-4 mt-0.5 shrink-0" style={{ color: "#4ade80" }} />
-                  <p className="text-[12px] leading-relaxed" style={{ color: "#a1a1aa" }}>
+                <div className="mt-5 flex items-start gap-2.5 p-3.5 rounded-xl bg-emerald-500/[0.06] border border-emerald-500/15">
+                  <ShieldCheck className="w-4 h-4 mt-0.5 shrink-0 text-emerald-400" />
+                  <p className="text-[12px] leading-relaxed text-text-secondary">
                     Seus dados são protegidos com criptografia de ponta a ponta.
                     Nunca compartilhamos suas informações.
                   </p>
@@ -383,13 +343,12 @@ export default function LoginPage() {
           </div>
 
           {/* Bottom toggle */}
-          <p className="mt-6 text-center text-[13px]" style={{ color: "#a1a1aa" }}>
+          <p className="mt-6 text-center text-[13px] text-text-secondary auth-fade-in auth-delay-2">
             {isLogin ? "Ainda não tem uma conta?" : "Já possui uma conta?"}{" "}
             <button
               type="button"
               onClick={() => switchMode(isLogin ? "register" : "login")}
-              className="font-semibold transition-colors duration-150"
-              style={{ color: "#f97316" }}
+              className="font-semibold text-accent hover:text-accent-hover transition-colors duration-150"
             >
               {isLogin ? "Criar conta" : "Fazer login"}
             </button>
@@ -401,6 +360,7 @@ export default function LoginPage() {
 }
 
 /* ─── Reusable input ─── */
+
 function InputField({
   id,
   label,
@@ -424,16 +384,12 @@ function InputField({
     <div className="space-y-2">
       <label
         htmlFor={id}
-        className="block text-[13px] font-medium"
-        style={{ color: "rgba(250, 250, 250, 0.7)" }}
+        className="block text-[13px] font-medium text-text-primary/70"
       >
         {label}
       </label>
       <div className="relative">
-        <div
-          className="absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors duration-200"
-          style={{ color: "#71717a" }}
-        >
+        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary transition-colors duration-200">
           <Icon className="w-4 h-4" />
         </div>
         <input
@@ -443,22 +399,12 @@ function InputField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={cn(
-            "w-full pl-10 py-3 text-sm rounded-xl outline-none transition-all duration-200",
+            "auth-input w-full pl-10 py-3 text-sm rounded-xl outline-none transition-all duration-200",
+            "bg-surface-hover border border-zinc-700 text-text-primary",
+            "placeholder:text-text-secondary/50",
+            "focus:border-accent",
             rightAction ? "pr-11" : "pr-4"
           )}
-          style={{
-            background: "#1a1a1d",
-            border: "1px solid #3f3f46",
-            color: "#fafafa",
-          }}
-          onFocus={(e) => {
-            e.currentTarget.style.borderColor = "#f97316";
-            e.currentTarget.style.boxShadow = "0 0 0 3px rgba(249, 115, 22, 0.15)";
-          }}
-          onBlur={(e) => {
-            e.currentTarget.style.borderColor = "#3f3f46";
-            e.currentTarget.style.boxShadow = "none";
-          }}
         />
         {rightAction}
       </div>

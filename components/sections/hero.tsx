@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, ShieldCheck, RefreshCw, Users } from "lucide-react";
+import { ArrowRight, ChevronDown, Zap, ShieldCheck, RefreshCw, Users } from "lucide-react";
 
 export function Hero() {
   return (
@@ -107,13 +107,18 @@ export function Hero() {
 
             {/* Row 3: CTAs */}
             <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 hero-fade-in hero-delay-3">
-              <Button size="lg" className="h-12 text-base px-8">
-                Acessar Scripts
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button variant="secondary" size="lg" className="h-12 text-base px-8">
-                Comunidade
-              </Button>
+              <a href="/#products">
+                <Button size="lg" className="h-12 text-base px-8">
+                  Ver Cheats
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
+              <a href="https://discord.gg/solarhub" target="_blank" rel="noopener noreferrer">
+                <Button variant="secondary" size="lg" className="h-12 text-base px-8">
+                  Discord
+                  <ChevronDown className="w-4 h-4 -rotate-90" />
+                </Button>
+              </a>
             </div>
 
             {/* Row 4: Micro trust bar */}
@@ -146,7 +151,7 @@ export function Hero() {
                 alt="Chamber - VALORANT Agent"
                 width={800}
                 height={800}
-                className="relative z-10 object-contain h-[60vh] sm:h-[70vh] lg:h-[90vh] w-auto drop-shadow-[0_20px_60px_rgba(0,0,0,0.3)]"
+                className="esp-character relative z-10 object-contain h-[60vh] sm:h-[70vh] lg:h-[90vh] w-auto"
                 priority
               />
 
@@ -166,11 +171,6 @@ export function Hero() {
 
                 {/* Distance */}
                 <div className="esp-distance">12m</div>
-              </div>
-
-              {/* Health Bar (left side, vertical) */}
-              <div className="esp-healthbar" style={{ left: "calc(12% - 10px)" }}>
-                <div className="esp-healthbar-fill" style={{ height: "100%" }} />
               </div>
 
             </div>

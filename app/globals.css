@@ -156,19 +156,26 @@ body {
 /* ── ESP Box (cheat-style bounding box around character) ── */
 .esp-container {
   position: relative;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: default;
 }
 
-.esp-container:hover {
-  transform: scale(1.05);
+.esp-container .esp-character {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.esp-container:hover .esp-character {
+  transform: scale(1.03);
+  filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.3))
+          drop-shadow(0 0 30px rgba(249, 115, 22, 0.12));
 }
 
 .esp-box {
   position: absolute;
-  inset: 4% 12% 2% 12%;
+  inset: 14% 22% 8% 22%;
   z-index: 15;
   pointer-events: none;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ESP corner brackets */
@@ -267,13 +274,13 @@ body {
 /* ESP Health Bar */
 .esp-healthbar {
   position: absolute;
-  left: -10px;
-  top: 18px;
-  bottom: 18px;
-  width: 4px;
-  background: rgba(39, 39, 42, 0.6);
+  top: 14%;
+  bottom: 8%;
+  width: 3px;
+  background: rgba(39, 39, 42, 0.5);
   border-radius: 2px;
   overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .esp-healthbar-fill {
@@ -282,9 +289,13 @@ body {
   left: 0;
   right: 0;
   height: 100%;
-  background: linear-gradient(to top, #22c55e 0%, #22c55e 70%, #eab308 85%, #ef4444 100%);
+  background: linear-gradient(to top, #22c55e 0%, #22c55e 60%, #eab308 80%, #ef4444 100%);
   border-radius: 2px;
   transition: height 0.5s ease;
+}
+
+.esp-container:hover .esp-healthbar-fill {
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.4);
 }
 
 /* ESP name tag */
@@ -315,22 +326,32 @@ body {
   white-space: nowrap;
 }
 
-/* Subtle ESP pulse animation on hover */
+/* Subtle ESP hover enhancements */
 .esp-container:hover .esp-box {
   border-color: #fb923c;
+  inset: 13% 21% 7% 21%;
+}
+
+.esp-container:hover .esp-healthbar {
+  top: 13%;
+  bottom: 7%;
 }
 
 @keyframes espPulse {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.5; }
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.4; }
 }
 
 .esp-container:hover .esp-line-top,
 .esp-container:hover .esp-line-bottom,
 .esp-container:hover .esp-line-left,
 .esp-container:hover .esp-line-right {
-  background: rgba(249, 115, 22, 0.4);
-  animation: espPulse 2s ease-in-out infinite;
+  background: rgba(249, 115, 22, 0.35);
+  animation: espPulse 2.5s ease-in-out infinite;
+}
+
+.esp-container:hover .esp-nametag {
+  text-shadow: 0 0 12px rgba(249, 115, 22, 0.6);
 }
 
 /* HUD Cards */

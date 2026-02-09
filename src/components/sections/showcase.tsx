@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, ShieldCheck, RefreshCw, Users } from "lucide-react";
+import { ArrowUpRight, Zap, ShieldCheck, RefreshCw, Users } from "lucide-react";
 
 export function Showcase() {
   return (
-    <section className="relative overflow-hidden">
+    <section id="showcase" className="relative overflow-hidden">
       {/* Background layers */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:60px_60px]" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/[0.06] rounded-full blur-[150px]" />
@@ -26,7 +26,7 @@ export function Showcase() {
           <div className="relative z-[10] hero-fade-in hero-delay-2 flex items-end justify-center" style={{ height: "80vh" }}>
 
             {/* Radial glow behind Jett */}
-            {/*<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-radial from-accent/15 to-transparent rounded-full blur-3xl" />*/}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-radial from-accent/15 to-transparent rounded-full blur-3xl" />
 
             <Image
               src="/jett.png"
@@ -85,13 +85,12 @@ export function Showcase() {
             </p>
 
             <div className="mt-5 flex items-center gap-3 hero-fade-in hero-delay-4">
-              <Button size="lg" className="h-12 text-base px-8">
-                Acessar Scripts
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button variant="secondary" size="lg" className="h-12 text-base px-8">
-                Comunidade
-              </Button>
+              <a href="https://discord.gg/solarhub" target="_blank" rel="noopener noreferrer">
+                <Button size="lg" variant="outline" className="h-12 text-base px-8">
+                  Entrar no Discord
+                  <ArrowUpRight className="w-4 h-4" />
+                </Button>
+              </a>
             </div>
 
             <div className="mt-4 flex items-center gap-4 text-xs text-text-secondary hero-fade-in hero-delay-5">
@@ -193,15 +192,14 @@ export function Showcase() {
             </div>
           </div>
 
-          {/* CTAs */}
+          {/* CTA */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 hero-fade-in hero-delay-3">
-            <Button size="lg" className="h-12 text-base px-8">
-              Acessar Scripts
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-            <Button variant="secondary" size="lg" className="h-12 text-base px-8">
-              Comunidade
-            </Button>
+            <a href="https://discord.gg/solarhub" target="_blank" rel="noopener noreferrer">
+              <Button size="lg" variant="outline" className="h-12 text-base px-8 w-full sm:w-auto">
+                Entrar no Discord
+                <ArrowUpRight className="w-4 h-4" />
+              </Button>
+            </a>
           </div>
 
           {/* Trust bar */}

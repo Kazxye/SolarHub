@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, ShieldCheck, RefreshCw, Users } from "lucide-react";
+import { ArrowUpRight, Zap, ShieldCheck, RefreshCw, Users } from "lucide-react";
 
 export function Showcase() {
   return (
@@ -85,13 +85,12 @@ export function Showcase() {
             </p>
 
             <div className="mt-5 flex items-center gap-3 hero-fade-in hero-delay-4">
-              <Button size="lg" className="h-12 text-base px-8">
-                Acessar Scripts
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button variant="secondary" size="lg" className="h-12 text-base px-8">
-                Comunidade
-              </Button>
+              <a href="https://discord.gg/solarhub" target="_blank" rel="noopener noreferrer">
+                <Button size="lg" variant="outline" className="h-12 text-base px-8">
+                  Entrar no Discord
+                  <ArrowUpRight className="w-4 h-4" />
+                </Button>
+              </a>
             </div>
 
             <div className="mt-4 flex items-center gap-4 text-xs text-text-secondary hero-fade-in hero-delay-5">
@@ -193,15 +192,14 @@ export function Showcase() {
             </div>
           </div>
 
-          {/* CTAs */}
+          {/* CTA */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 hero-fade-in hero-delay-3">
-            <Button size="lg" className="h-12 text-base px-8">
-              Acessar Scripts
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-            <Button variant="secondary" size="lg" className="h-12 text-base px-8">
-              Comunidade
-            </Button>
+            <a href="https://discord.gg/solarhub" target="_blank" rel="noopener noreferrer">
+              <Button size="lg" variant="outline" className="h-12 text-base px-8 w-full sm:w-auto">
+                Entrar no Discord
+                <ArrowUpRight className="w-4 h-4" />
+              </Button>
+            </a>
           </div>
 
           {/* Trust bar */}
