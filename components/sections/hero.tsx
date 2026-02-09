@@ -24,15 +24,15 @@ export function Hero() {
             <div className="hero-fade-in">
               {/* Headline — bold, short, impactful */}
               <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight text-text-primary leading-[1.05]">
-                Domine cada
+                Sua vantagem
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
-                  partida.
+                  competitiva.
                 </span>
               </h1>
 
               <p className="mt-4 text-base text-text-secondary leading-relaxed max-w-md">
-                Scripts de elite para quem não aceita menos que a vitória.
+                Scripts de elite para quem joga pra vencer. Precisão, velocidade e segurança em cada round.
               </p>
             </div>
 
@@ -133,13 +133,9 @@ export function Hero() {
             </div>
           </div>
 
-          {/* ======== RIGHT SIDE — CHAMBER ======== */}
+          {/* ======== RIGHT SIDE — CHAMBER with ESP overlay ======== */}
           <div className="lg:col-span-6 xl:col-span-7 relative flex items-center justify-center lg:justify-end">
-            <div className="relative hero-fade-in hero-delay-2">
-
-              {/* Accent ring behind Chamber */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full border border-accent/10" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] rounded-full border border-accent/[0.06]" />
+            <div className="relative hero-fade-in hero-delay-2 esp-container">
 
               {/* Radial glow */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] bg-gradient-radial from-accent/15 to-transparent rounded-full blur-3xl" />
@@ -148,32 +144,33 @@ export function Hero() {
               <Image
                 src="/chamber.png"
                 alt="Chamber - VALORANT Agent"
-                width={700}
-                height={700}
-                className="relative z-10 object-contain h-[55vh] sm:h-[65vh] lg:h-[85vh] w-auto drop-shadow-[0_20px_60px_rgba(0,0,0,0.3)]"
+                width={800}
+                height={800}
+                className="relative z-10 object-contain h-[60vh] sm:h-[70vh] lg:h-[90vh] w-auto drop-shadow-[0_20px_60px_rgba(0,0,0,0.3)]"
                 priority
               />
 
-              {/* Floating stat cards around Chamber */}
-              <div className="absolute top-[15%] left-0 z-20 px-4 py-3 rounded-2xl bg-surface/90 backdrop-blur-md border border-border/50 shadow-xl hero-fade-in hero-delay-4">
-                <div className="text-xs text-text-secondary uppercase tracking-wider mb-1">Uptime</div>
-                <div className="text-2xl font-bold text-text-primary">99.9%</div>
-                <div className="mt-1.5 w-full h-1.5 rounded-full bg-border/50 overflow-hidden">
-                  <div className="h-full w-[99.9%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400" />
-                </div>
+              {/* ESP Bounding Box */}
+              <div className="esp-box" style={{ borderColor: "#f97316" }}>
+                {/* Corner connectors (thin lines between corners) */}
+                <div className="esp-line-top" />
+                <div className="esp-line-bottom" />
+                <div className="esp-line-left" />
+                <div className="esp-line-right" />
+
+                {/* Bottom corners (separate element for ::before/::after) */}
+                <div className="esp-box-bottom absolute inset-0" style={{ borderColor: "#f97316" }} />
+
+                {/* Name tag */}
+                <div className="esp-nametag">Chamber</div>
+
+                {/* Distance */}
+                <div className="esp-distance">12m</div>
               </div>
 
-              <div className="absolute bottom-[20%] left-[5%] z-20 px-4 py-3 rounded-2xl bg-surface/90 backdrop-blur-md border border-border/50 shadow-xl hero-fade-in hero-delay-5">
-                <div className="text-xs text-text-secondary uppercase tracking-wider mb-1">Suporte</div>
-                <div className="text-2xl font-bold text-accent">24/7</div>
-              </div>
-
-              <div className="absolute top-[30%] right-0 z-20 px-4 py-3 rounded-2xl bg-surface/90 backdrop-blur-md border border-border/50 shadow-xl hidden lg:block hero-fade-in" style={{ animationDelay: "1.1s" }}>
-                <div className="text-xs text-text-secondary uppercase tracking-wider mb-1">Atualizado</div>
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                  <span className="text-sm font-semibold text-text-primary">Patch atual</span>
-                </div>
+              {/* Health Bar (left side, vertical) */}
+              <div className="esp-healthbar" style={{ left: "calc(12% - 10px)" }}>
+                <div className="esp-healthbar-fill" style={{ height: "100%" }} />
               </div>
 
             </div>

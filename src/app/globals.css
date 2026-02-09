@@ -153,6 +153,186 @@ body {
 .glass-float-3 { animation: cardFloat 5s ease-in-out 1.6s infinite; }
 .glass-float-4 { animation: cardFloat 5s ease-in-out 2.4s infinite; }
 
+/* ── ESP Box (cheat-style bounding box around character) ── */
+.esp-container {
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+}
+
+.esp-container:hover {
+  transform: scale(1.05);
+}
+
+.esp-box {
+  position: absolute;
+  inset: 4% 12% 2% 12%;
+  z-index: 15;
+  pointer-events: none;
+}
+
+/* ESP corner brackets */
+.esp-box::before,
+.esp-box::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: #f97316;
+  transition: border-color 0.3s ease;
+}
+
+/* Top-left corner */
+.esp-box::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid;
+  border-left: 2px solid;
+  border-color: inherit;
+}
+
+/* Top-right corner */
+.esp-box::after {
+  top: 0;
+  right: 0;
+  border-top: 2px solid;
+  border-right: 2px solid;
+  border-color: inherit;
+}
+
+.esp-box-bottom::before,
+.esp-box-bottom::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: #f97316;
+}
+
+/* Bottom-left corner */
+.esp-box-bottom::before {
+  bottom: 0;
+  left: 0;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+  border-color: inherit;
+}
+
+/* Bottom-right corner */
+.esp-box-bottom::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  border-color: inherit;
+}
+
+/* ESP connecting lines (thin, subtle) */
+.esp-line-top,
+.esp-line-bottom,
+.esp-line-left,
+.esp-line-right {
+  position: absolute;
+  background: rgba(249, 115, 22, 0.2);
+}
+
+.esp-line-top {
+  top: 0;
+  left: 18px;
+  right: 18px;
+  height: 1px;
+}
+
+.esp-line-bottom {
+  bottom: 0;
+  left: 18px;
+  right: 18px;
+  height: 1px;
+}
+
+.esp-line-left {
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 1px;
+}
+
+.esp-line-right {
+  right: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 1px;
+}
+
+/* ESP Health Bar */
+.esp-healthbar {
+  position: absolute;
+  left: -10px;
+  top: 18px;
+  bottom: 18px;
+  width: 4px;
+  background: rgba(39, 39, 42, 0.6);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.esp-healthbar-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(to top, #22c55e 0%, #22c55e 70%, #eab308 85%, #ef4444 100%);
+  border-radius: 2px;
+  transition: height 0.5s ease;
+}
+
+/* ESP name tag */
+.esp-nametag {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f97316;
+  white-space: nowrap;
+  text-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
+}
+
+/* ESP distance tag */
+.esp-distance {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: rgba(161, 161, 170, 0.7);
+  white-space: nowrap;
+}
+
+/* Subtle ESP pulse animation on hover */
+.esp-container:hover .esp-box {
+  border-color: #fb923c;
+}
+
+@keyframes espPulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+}
+
+.esp-container:hover .esp-line-top,
+.esp-container:hover .esp-line-bottom,
+.esp-container:hover .esp-line-left,
+.esp-container:hover .esp-line-right {
+  background: rgba(249, 115, 22, 0.4);
+  animation: espPulse 2s ease-in-out infinite;
+}
+
 /* HUD Cards */
 .hud-card {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),

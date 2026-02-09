@@ -26,7 +26,7 @@ export function Showcase() {
           <div className="relative z-[10] hero-fade-in hero-delay-2 flex items-end justify-center" style={{ height: "80vh" }}>
 
             {/* Radial glow behind Jett */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-radial from-accent/15 to-transparent rounded-full blur-3xl" />
+            {/*<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-radial from-accent/15 to-transparent rounded-full blur-3xl" />*/}
 
             <Image
               src="/jett.png"
@@ -41,19 +41,19 @@ export function Showcase() {
           {/* ── HEADLINE BACK LAYER — behind Jett, very subtle ghost text ── */}
           <div className="absolute inset-0 z-[5] flex items-center justify-center pointer-events-none hero-fade-in hero-delay-1">
             <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {/* DOMINE — shifted to the LEFT */}
+              {/* ALÉM — shifted to the LEFT */}
               <div className="hero-headline-back text-[8rem] xl:text-[10rem] 2xl:text-[12rem] font-black leading-[0.82] tracking-[-0.04em] uppercase text-text-primary select-none text-left -ml-4">
-                DOMINE
+                ALÉM
               </div>
-              {/* CADA — shifted to the RIGHT */}
+              {/* DO — shifted to the RIGHT */}
               <div className="hero-headline-back text-[8rem] xl:text-[10rem] 2xl:text-[12rem] font-black leading-[0.82] tracking-[-0.04em] uppercase select-none text-right -mr-4">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent/30 to-amber-500/30">
-                  CADA
+                  DO
                 </span>
               </div>
-              {/* PARTIDA — shifted to the LEFT */}
+              {/* LIMITE — shifted to the LEFT */}
               <div className="hero-headline-back text-[8rem] xl:text-[10rem] 2xl:text-[12rem] font-black leading-[0.82] tracking-[-0.04em] uppercase text-text-primary select-none text-left ml-8">
-                PARTIDA
+                LIMITE
               </div>
             </div>
           </div>
@@ -61,19 +61,19 @@ export function Showcase() {
           {/* ── HEADLINE FRONT LAYER — in front of Jett, masked around her silhouette ── */}
           <div className="absolute inset-0 z-[15] flex items-center justify-center pointer-events-none hero-headline-front hero-fade-in hero-delay-1">
             <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {/* DOMINE — shifted to the LEFT */}
+              {/* ALÉM — shifted to the LEFT */}
               <div className="text-[8rem] xl:text-[10rem] 2xl:text-[12rem] font-black leading-[0.82] tracking-[-0.04em] uppercase text-text-primary select-none text-left -ml-4">
-                DOMINE
+                ALÉM
               </div>
-              {/* CADA — shifted to the RIGHT, in ORANGE */}
+              {/* DO — shifted to the RIGHT, in ORANGE */}
               <div className="text-[8rem] xl:text-[10rem] 2xl:text-[12rem] font-black leading-[0.82] tracking-[-0.04em] uppercase select-none text-right -mr-4">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
-                  CADA
+                  DO
                 </span>
               </div>
-              {/* PARTIDA — shifted to the LEFT */}
+              {/* LIMITE — shifted to the LEFT */}
               <div className="text-[8rem] xl:text-[10rem] 2xl:text-[12rem] font-black leading-[0.82] tracking-[-0.04em] uppercase text-text-primary select-none text-left ml-8">
-                PARTIDA
+                LIMITE
               </div>
             </div>
           </div>
@@ -81,7 +81,7 @@ export function Showcase() {
           {/* ── CTA + SUBHEADLINE — bottom-left anchored ── */}
           <div className="absolute bottom-[6vh] left-0 z-[20] max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8" style={{ left: "50%", transform: "translateX(-50%)" }}>
             <p className="text-sm xl:text-base text-text-secondary leading-relaxed max-w-md hero-fade-in hero-delay-3">
-              Ferramentas avançadas para quem não aceita menos que a vitória.
+              Onde a habilidade encontra a tecnologia. Eleve seu gameplay ao próximo nível.
             </p>
 
             <div className="mt-5 flex items-center gap-3 hero-fade-in hero-delay-4">
@@ -122,16 +122,16 @@ export function Showcase() {
           {/* Headline */}
           <div className="hero-fade-in">
             <h2 className="text-5xl sm:text-6xl font-black uppercase tracking-tight leading-[0.9] text-text-primary">
-              DOMINE
+              ALÉM
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
-                CADA
+                DO
               </span>
               <br />
-              PARTIDA
+              LIMITE
             </h2>
             <p className="mt-4 text-sm text-text-secondary leading-relaxed max-w-sm">
-              Ferramentas avançadas para quem não aceita menos que a vitória.
+              Onde a habilidade encontra a tecnologia. Eleve seu gameplay ao próximo nível.
             </p>
           </div>
 
