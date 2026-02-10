@@ -92,7 +92,7 @@ function MicroLabel({
     <div className={className} aria-hidden="true">
       {/* Connector tick mark */}
       <svg
-        className="w-10 h-0.5 mb-2 overflow-visible"
+        className="w-[40px] h-[2px] mb-2 overflow-visible"
         viewBox="0 0 40 2"
         fill="none"
       >
@@ -131,11 +131,11 @@ export function Showcase() {
     <section id="showcase" className="relative overflow-hidden">
       {/* ── Background ── */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808006_1px,transparent_1px),linear-gradient(to_bottom,#80808006_1px,transparent_1px)] bg-[size:72px_72px]" />
-      <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-175 h-125 bg-accent/4 rounded-full blur-[160px]" />
+      <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-accent/[0.04] rounded-full blur-[160px]" />
 
       {/* Section fades */}
-      <div className="absolute top-0 left-0 right-0 h-24 bg-linear-to-b from-background to-transparent z-25" />
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-background to-transparent z-25" />
+      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent z-[25]" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-[25]" />
 
       {/* ═══════════════════════════════════════════
           DESKTOP (lg+)
@@ -144,13 +144,13 @@ export function Showcase() {
         <div className="hero-editorial-center" style={{ minHeight: "90vh" }}>
 
           {/* ── Layer 1: Back headline (ghost) ── z-[5] */}
-          <div className="absolute inset-0 z-5 flex items-center justify-center pointer-events-none hero-fade-in hero-delay-1">
+          <div className="absolute inset-0 z-[5] flex items-center justify-center pointer-events-none hero-fade-in hero-delay-1">
             <div className="relative w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className={`${headlineClass} showcase-headline-back text-text-primary -translate-x-[12%]`}>
                 ALÉM
               </div>
               <div className={`${headlineClass} showcase-headline-back text-right translate-x-[12%]`}>
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-accent/25 to-amber-500/25">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent/25 to-amber-500/25">
                   DO
                 </span>
               </div>
@@ -161,16 +161,16 @@ export function Showcase() {
           </div>
 
           {/* ── Layer 2: Editorial SVG elements ── z-[8] */}
-          <div className="absolute inset-0 z-8 pointer-events-none">
+          <div className="absolute inset-0 z-[8] pointer-events-none">
             <div className="relative w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
 
               {/* 1) Main stroke — bold underline beneath "ALÉM" */}
-              <div className="absolute top-[28%] left-[1%] w-85 xl:w-105 hero-fade-in hero-delay-3">
+              <div className="absolute top-[28%] left-[1%] w-[340px] xl:w-[420px] hero-fade-in hero-delay-3">
                 <MainStroke className="w-full h-auto text-accent/50" />
               </div>
 
               {/* 2) Directional arrow — bottom-right, pointing toward "DO" */}
-              <div className="absolute bottom-[30%] right-[12%] xl:right-[14%] w-20 xl:w-25 hero-fade-in hero-delay-4">
+              <div className="absolute bottom-[30%] right-[12%] xl:right-[14%] w-[80px] xl:w-[100px] hero-fade-in hero-delay-4">
                 <DirectionalArrow className="w-full h-auto text-accent/40" />
               </div>
 
@@ -186,7 +186,7 @@ export function Showcase() {
           </div>
 
           {/* ── Layer 3: JETT ── z-[10] */}
-          <div className="relative z-10 hero-fade-in hero-delay-2 flex items-end justify-center" style={{ height: "90vh" }}>
+          <div className="relative z-[10] hero-fade-in hero-delay-2 flex items-end justify-center" style={{ height: "90vh" }}>
             <Image
               src="/jett.png"
               alt="Jett - VALORANT Agent"
@@ -198,13 +198,13 @@ export function Showcase() {
           </div>
 
           {/* ── Layer 4: Front headline (masked around Jett) ── z-[15] */}
-          <div className="absolute inset-0 z-15 flex items-center justify-center pointer-events-none showcase-headline-front hero-fade-in hero-delay-1">
+          <div className="absolute inset-0 z-[15] flex items-center justify-center pointer-events-none showcase-headline-front hero-fade-in hero-delay-1">
             <div className="relative w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className={`${headlineClass} showcase-text-outline text-text-primary -translate-x-[12%]`}>
                 ALÉM
               </div>
               <div className={`${headlineClass} text-right translate-x-[12%]`}>
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-amber-500">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
                   DO
                 </span>
               </div>
@@ -215,7 +215,7 @@ export function Showcase() {
           </div>
 
           {/* ── Layer 5: CTA ── z-[20] */}
-          <div className="absolute bottom-[3vh] left-1/2 -translate-x-1/2 z-20 max-w-5xl w-full px-4 sm:px-6 lg:px-8">
+          <div className="absolute bottom-[3vh] left-1/2 -translate-x-1/2 z-[20] max-w-5xl w-full px-4 sm:px-6 lg:px-8">
             <p className="text-sm xl:text-base text-text-secondary leading-relaxed max-w-md hero-fade-in hero-delay-3">
               Onde a habilidade encontra a tecnologia. Eleve seu gameplay ao próximo nível.
             </p>
@@ -262,7 +262,7 @@ export function Showcase() {
                 <MainStroke className="absolute -bottom-2 left-0 w-[115%] h-auto text-accent/45" />
               </span>
               <br />
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-amber-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
                 DO
               </span>
               <br />
@@ -288,10 +288,10 @@ export function Showcase() {
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[75%] h-[75%] rounded-full border border-accent/[0.07]" />
 
               {/* Minimal warm glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50%] h-[50%] bg-accent/6 rounded-full blur-[80px]" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50%] h-[50%] bg-accent/[0.06] rounded-full blur-[80px]" />
 
               {/* Directional arrow — near Jett's weapon hand */}
-              <div className="absolute top-[12%] right-[5%] w-12.5 hero-fade-in hero-delay-4">
+              <div className="absolute top-[12%] right-[5%] w-[50px] hero-fade-in hero-delay-4">
                 <DirectionalArrow className="w-full h-auto text-accent/30 -scale-x-100" />
               </div>
 
