@@ -91,39 +91,6 @@ body {
   justify-content: center;
 }
 
-/* ── Cut-through headline (centered character) ── */
-.hero-headline-back {
-  opacity: 0.07;
-  text-shadow: 0 0 120px rgba(249, 115, 22, 0.04);
-  will-change: transform;
-}
-
-.hero-headline-front {
-  will-change: transform;
-  mask-image: radial-gradient(
-    ellipse 22% 44% at 50% 46%,
-    transparent 0%,
-    transparent 60%,
-    black 78%
-  );
-  -webkit-mask-image: radial-gradient(
-    ellipse 22% 44% at 50% 46%,
-    transparent 0%,
-    transparent 60%,
-    black 78%
-  );
-}
-
-.dark .hero-headline-front div {
-  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.6);
-}
-
-/* ── Jett character glow ── */
-.jett-glow {
-  filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5))
-          drop-shadow(0 0 40px rgba(249, 115, 22, 0.08));
-}
-
 /* ═══════════════════════════════════════════════
    SHOWCASE — Editorial Jett + "ALÉM DO LIMITE"
    ═══════════════════════════════════════════════ */
@@ -237,23 +204,6 @@ body {
   }
 }
 
-/* ── Glassmorphism floating cards ── */
-.glass-card {
-  background: rgba(17, 17, 19, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(39, 39, 42, 0.5);
-  border-radius: 1rem;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.3s ease,
-              box-shadow 0.3s ease;
-}
-
-.glass-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(249, 115, 22, 0.3);
-}
-
 /* ── ESP Box (cheat-style bounding box around character) ── */
 .esp-container {
   position: relative;
@@ -279,7 +229,6 @@ body {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ESP corner brackets */
 .esp-box::before,
 .esp-box::after {
   content: '';
@@ -290,7 +239,6 @@ body {
   transition: border-color 0.3s ease;
 }
 
-/* Top-left corner */
 .esp-box::before {
   top: 0;
   left: 0;
@@ -299,7 +247,6 @@ body {
   border-color: inherit;
 }
 
-/* Top-right corner */
 .esp-box::after {
   top: 0;
   right: 0;
@@ -317,7 +264,6 @@ body {
   border-color: #f97316;
 }
 
-/* Bottom-left corner */
 .esp-box-bottom::before {
   bottom: 0;
   left: 0;
@@ -326,7 +272,6 @@ body {
   border-color: inherit;
 }
 
-/* Bottom-right corner */
 .esp-box-bottom::after {
   bottom: 0;
   right: 0;
@@ -335,7 +280,7 @@ body {
   border-color: inherit;
 }
 
-/* ESP connecting lines (thin, subtle) */
+/* ESP connecting lines */
 .esp-line-top,
 .esp-line-bottom,
 .esp-line-left,
@@ -372,7 +317,6 @@ body {
   width: 1px;
 }
 
-/* ESP name tag */
 .esp-nametag {
   position: absolute;
   top: -22px;
@@ -387,7 +331,6 @@ body {
   text-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
 }
 
-/* ESP distance tag */
 .esp-distance {
   position: absolute;
   bottom: -20px;
@@ -400,7 +343,7 @@ body {
   white-space: nowrap;
 }
 
-/* Subtle ESP hover enhancements */
+/* ESP hover */
 .esp-container:hover .esp-box {
   border-color: #fb923c;
   inset: 27% 23% 21% 23%;
@@ -456,22 +399,165 @@ body {
 .section-delay-3 { transition-delay: 0.15s; }
 .section-delay-4 { transition-delay: 0.20s; }
 .section-delay-5 { transition-delay: 0.25s; }
-.section-delay-6 { transition-delay: 0.35s; }
 
-/* Game Hub Cards */
-.game-card {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+/* ═══════════════════════════════════════════════
+   PRODUCT CARDS — Editorial HUD hover system
+   ═══════════════════════════════════════════════ */
+
+.product-card {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
               border-color 0.4s ease,
               box-shadow 0.4s ease;
 }
 
-.game-card:hover {
-  transform: translateY(-2px);
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
-.game-card:has(button:focus-visible) {
+.dark .product-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.product-card:has(button:focus-visible) {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* ── HUD scan line ── */
+.product-scanline {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(249, 115, 22, 0.04) 42%,
+    rgba(249, 115, 22, 0.10) 50%,
+    rgba(249, 115, 22, 0.04) 58%,
+    transparent 100%
+  );
+  background-size: 100% 35%;
+  background-repeat: no-repeat;
+  background-position: 0% -35%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.product-card:hover .product-scanline {
+  opacity: 1;
+  animation: productScan 1.1s ease-in-out forwards;
+}
+
+@keyframes productScan {
+  0%   { background-position: 0% -35%; }
+  100% { background-position: 0% 135%; }
+}
+
+/* ── HUD corner brackets ── */
+.product-bracket {
+  position: absolute;
+  z-index: 6;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.product-bracket::before,
+.product-bracket::after {
+  content: '';
+  position: absolute;
+  background: rgba(249, 115, 22, 0.5);
+}
+
+/* Horizontal bar */
+.product-bracket::before {
+  height: 2px;
+  width: 100%;
+}
+
+/* Vertical bar */
+.product-bracket::after {
+  width: 2px;
+  height: 100%;
+}
+
+/* Positions */
+.product-bracket-tl {
+  top: 8px;
+  left: 8px;
+  transform: translate(-6px, -6px);
+}
+.product-bracket-tl::before { top: 0; left: 0; }
+.product-bracket-tl::after { top: 0; left: 0; }
+
+.product-bracket-tr {
+  top: 8px;
+  right: 8px;
+  transform: translate(6px, -6px);
+}
+.product-bracket-tr::before { top: 0; right: 0; }
+.product-bracket-tr::after { top: 0; right: 0; }
+
+.product-bracket-bl {
+  bottom: 8px;
+  left: 8px;
+  transform: translate(-6px, 6px);
+}
+.product-bracket-bl::before { bottom: 0; left: 0; }
+.product-bracket-bl::after { bottom: 0; left: 0; }
+
+.product-bracket-br {
+  bottom: 8px;
+  right: 8px;
+  transform: translate(6px, 6px);
+}
+.product-bracket-br::before { bottom: 0; right: 0; }
+.product-bracket-br::after { bottom: 0; right: 0; }
+
+.product-card:hover .product-bracket {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* ── HUD micro label ── */
+.product-hud-label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(249, 115, 22, 0.8);
+  opacity: 0;
+  filter: blur(3px);
+  transform: translateY(-3px);
+  transition: opacity 0.35s ease 0.08s,
+              filter 0.35s ease 0.08s,
+              transform 0.35s ease 0.08s;
+  pointer-events: none;
+}
+
+.product-hud-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f97316;
+  box-shadow: 0 0 6px rgba(249, 115, 22, 0.5);
+}
+
+.product-card:hover .product-hud-label {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
 }
 
 /* ── Auth page animations ── */
@@ -518,53 +604,91 @@ body {
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
-/* ── Plans modal animations ── */
-@keyframes modalOverlayIn {
+/* ═══════════════════════════════════════════════
+   PRODUCT DRAWER — slide from right (desktop) / bottom (mobile)
+   ═══════════════════════════════════════════════ */
+
+/* Overlay */
+@keyframes drawerOverlayIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-@keyframes modalContentIn {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes modalOverlayOut {
+@keyframes drawerOverlayOut {
   from { opacity: 1; }
   to { opacity: 0; }
 }
 
-@keyframes modalContentOut {
+.drawer-overlay-enter {
+  animation: drawerOverlayIn 0.25s ease-out forwards;
+}
+
+.drawer-overlay-exit {
+  animation: drawerOverlayOut 0.2s ease-in forwards;
+}
+
+/* Panel — mobile: slide up from bottom */
+@keyframes drawerPanelUpIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drawerPanelUpOut {
   from {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateY(0);
   }
   to {
     opacity: 0;
-    transform: scale(0.96) translateY(12px);
+    transform: translateY(100%);
   }
 }
 
-.modal-overlay-enter {
-  animation: modalOverlayIn 0.2s ease-out forwards;
+.drawer-panel-enter {
+  animation: drawerPanelUpIn 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards;
 }
 
-.modal-content-enter {
-  animation: modalContentIn 0.25s ease-out forwards;
+.drawer-panel-exit {
+  animation: drawerPanelUpOut 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
 }
 
-.modal-overlay-exit {
-  animation: modalOverlayOut 0.15s ease-in forwards;
-}
+/* Panel — desktop: slide in from right */
+@media (min-width: 1024px) {
+  @keyframes drawerPanelRightIn {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 
-.modal-content-exit {
-  animation: modalContentOut 0.15s ease-in forwards;
+  @keyframes drawerPanelRightOut {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+  }
+
+  .drawer-panel-enter {
+    animation: drawerPanelRightIn 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+
+  .drawer-panel-exit {
+    animation: drawerPanelRightOut 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
 }
 
 /* Plan card hover */
@@ -573,6 +697,28 @@ body {
 }
 
 .plan-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+}
+
+/* ── Reduced motion for products ── */
+@media (prefers-reduced-motion: reduce) {
+  .product-scanline {
+    display: none;
+  }
+  .product-card:hover .product-bracket {
+    transition: opacity 0.15s ease;
+    transform: translate(0, 0);
+  }
+  .product-hud-label {
+    filter: none !important;
+    transform: none !important;
+    transition: opacity 0.15s ease;
+  }
+  .drawer-panel-enter,
+  .drawer-panel-exit,
+  .drawer-overlay-enter,
+  .drawer-overlay-exit {
+    animation-duration: 0.01s;
+  }
 }
 
