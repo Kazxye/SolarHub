@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/sections/hero";
 import { Products } from "@/components/sections/products";
 import { Showcase } from "@/components/sections/showcase";
+
 export default function Home() {
   return (
     <>
