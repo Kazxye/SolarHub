@@ -9,9 +9,9 @@ export function Hero() {
     <section className="relative min-h-screen overflow-hidden">
       {/* Background layers */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:60px_60px]" />
-      <div className="absolute top-0 right-0 w-[60%] h-full bg-gradient-to-l from-accent/[0.04] to-transparent" />
-      <div className="absolute -top-40 right-[20%] w-[500px] h-[500px] bg-accent/[0.07] rounded-full blur-[120px]" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[300px] bg-accent/[0.04] rounded-full blur-[100px]" />
+      <div className="absolute top-0 right-0 w-[60%] h-full bg-linear-to-l from-accent/4 to-transparent" />
+      <div className="absolute -top-40 right-[20%] w-125 h-125 bg-accent/[0.07] rounded-full blur-[120px]" />
+      <div className="absolute bottom-0 left-0 w-100 h-75 bg-accent/4 rounded-full blur-[100px]" />
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
@@ -26,7 +26,7 @@ export function Hero() {
               <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight text-text-primary leading-[1.05]">
                 Sua vantagem
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-amber-500">
                   competitiva.
                 </span>
               </h1>
@@ -42,10 +42,10 @@ export function Hero() {
               {/* Card 1 — SPEED (destaque principal, maior) */}
               <div className="hud-card group col-span-2 sm:col-span-1 relative p-4 rounded-2xl bg-surface/60 backdrop-blur-sm border border-border/50 hover:border-accent/40 transition-all duration-300 overflow-hidden">
                 {/* Accent line top */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent via-accent/60 to-transparent" />
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r from-accent via-accent/60 to-transparent" />
                 <div className="mb-3">
                   <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
-                    <Zap className="w-[18px] h-[18px] text-accent" />
+                    <Zap className="w-4.5 h-4.5 text-accent" />
                   </div>
                 </div>
                 <div className="text-2xl sm:text-3xl font-bold text-text-primary font-mono tracking-tight">
@@ -58,10 +58,10 @@ export function Hero() {
 
               {/* Card 2 — SECURITY */}
               <div className="hud-card group relative p-4 rounded-2xl bg-surface/60 backdrop-blur-sm border border-border/50 hover:border-accent/40 transition-all duration-300 overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-500 via-emerald-500/60 to-transparent" />
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r from-emerald-500 via-emerald-500/60 to-transparent" />
                 <div className="mb-3">
                   <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
-                    <ShieldCheck className="w-[18px] h-[18px] text-emerald-500" />
+                    <ShieldCheck className="w-4.5 h-4.5 text-emerald-500" />
                   </div>
                 </div>
                 <div className="text-2xl sm:text-3xl font-bold text-text-primary font-mono tracking-tight">
@@ -74,10 +74,10 @@ export function Hero() {
 
               {/* Card 3 — UPDATES */}
               <div className="hud-card group relative p-4 rounded-2xl bg-surface/60 backdrop-blur-sm border border-border/50 hover:border-accent/40 transition-all duration-300 overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 via-blue-500/60 to-transparent" />
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r from-blue-500 via-blue-500/60 to-transparent" />
                 <div className="mb-3">
                   <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
-                    <RefreshCw className="w-[18px] h-[18px] text-blue-500" />
+                    <RefreshCw className="w-4.5 h-4.5 text-blue-500" />
                   </div>
                 </div>
                 <div className="text-2xl sm:text-3xl font-bold text-text-primary font-mono tracking-tight">
@@ -90,10 +90,10 @@ export function Hero() {
 
               {/* Card 4 — COMMUNITY */}
               <div className="hud-card group relative p-4 rounded-2xl bg-surface/60 backdrop-blur-sm border border-border/50 hover:border-accent/40 transition-all duration-300 overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-violet-500 via-violet-500/60 to-transparent" />
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r from-violet-500 via-violet-500/60 to-transparent" />
                 <div className="mb-3">
                   <div className="w-9 h-9 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
-                    <Users className="w-[18px] h-[18px] text-violet-500" />
+                    <Users className="w-4.5 h-4.5 text-violet-500" />
                   </div>
                 </div>
                 <div className="text-2xl sm:text-3xl font-bold text-text-primary font-mono tracking-tight">
@@ -179,7 +179,7 @@ export function Hero() {
       </div>
 
       {/* Bottom fade to next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-background to-transparent" />
     </section>
   );
 }

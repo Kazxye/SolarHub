@@ -377,7 +377,7 @@ function ProductCard({ product, onClick }: { product: Product; onClick: () => vo
               style={product.imagePosition ? { objectPosition: product.imagePosition } : undefined}
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-surface to-violet-950/50">
+            <div className="absolute inset-0 bg-linear-to-br from-violet-950 via-surface to-violet-950/50">
               <div
                 className="absolute inset-0 opacity-[0.05]"
                 style={{
@@ -392,7 +392,7 @@ function ProductCard({ product, onClick }: { product: Product; onClick: () => vo
           )}
 
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/50 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-surface via-surface/50 to-transparent" />
 
           {/* ── HUD scan line (hover only) ── */}
           <div className="product-scanline" />
@@ -634,7 +634,7 @@ function ProductDrawer({
           "absolute bottom-0 left-0 right-0 max-h-[90vh]",
           "rounded-t-2xl",
           /* Desktop: right drawer */
-          "lg:top-0 lg:bottom-0 lg:left-auto lg:right-0 lg:w-[520px] lg:max-h-full",
+          "lg:top-0 lg:bottom-0 lg:left-auto lg:right-0 lg:w-130 lg:max-h-full",
           "lg:rounded-t-none lg:rounded-l-2xl",
           "bg-surface border-t border-border/50 lg:border-t-0 lg:border-l lg:border-border/50",
           "overflow-y-auto overscroll-contain",
@@ -652,13 +652,13 @@ function ProductDrawer({
               style={product.imagePosition ? { objectPosition: product.imagePosition } : undefined}
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-surface to-violet-950/50">
+            <div className="absolute inset-0 bg-linear-to-br from-violet-950 via-surface to-violet-950/50">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <Fingerprint className="w-20 h-20 text-violet-500/15" />
               </div>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-surface via-surface/60 to-transparent" />
 
           {/* Close */}
           <button
@@ -760,7 +760,7 @@ export function Products() {
       >
         {/* Background */}
         <div className="absolute inset-0 bg-surface/20" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-accent/[0.03] rounded-full blur-[140px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-175 h-125 bg-accent/3 rounded-full blur-[140px]" />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section header */}
@@ -770,7 +770,7 @@ export function Products() {
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-text-primary">
               Escolha sua{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-amber-500">
                 ferramenta
               </span>
             </h2>

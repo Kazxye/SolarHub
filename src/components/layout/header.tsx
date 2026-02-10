@@ -58,7 +58,7 @@ export function Header() {
                 alt="SolarHub"
                 width={30}
                 height={30}
-                className="w-[30px] h-[30px] group-hover:scale-105 transition-transform duration-200"
+                className="w-7.5 h-7.5 group-hover:scale-105 transition-transform duration-200"
               />
               <span className="text-base font-bold text-text-primary tracking-tight">
                 Solar<span className="text-accent">Hub</span>
