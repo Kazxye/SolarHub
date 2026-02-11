@@ -294,17 +294,17 @@ function useScrollReveal() {
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target
-                  .querySelectorAll(".section-fade-in")
-                  .forEach((child) => child.classList.add("is-visible"));
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.05, rootMargin: "0px 0px -40px 0px" }
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target
+              .querySelectorAll(".section-fade-in")
+              .forEach((child) => child.classList.add("is-visible"));
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: "0px 0px -40px 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -318,25 +318,25 @@ function useScrollReveal() {
 
 function StatusPills({ tags, size = "sm" }: { tags: Tag[]; size?: "sm" | "md" }) {
   return (
-      <div className="flex flex-wrap items-center gap-1.5">
-        {tags.map((tag) => (
-            <span
-                key={tag.label}
-                className={cn(
-                    "inline-flex items-center gap-1.5 font-bold uppercase tracking-wider rounded-full border",
-                    tagStyles[tag.variant],
-                    size === "sm"
-                        ? "px-2 py-0.5 text-[9px]"
-                        : "px-2.5 py-1 text-[10px]"
-                )}
-            >
-          {tag.variant === "live" && (
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+    <div className="flex flex-wrap items-center gap-1.5">
+      {tags.map((tag) => (
+        <span
+          key={tag.label}
+          className={cn(
+            "inline-flex items-center gap-1.5 font-bold uppercase tracking-wider rounded-full border",
+            tagStyles[tag.variant],
+            size === "sm"
+              ? "px-2 py-0.5 text-[9px]"
+              : "px-2.5 py-1 text-[10px]"
           )}
-              {tag.label}
+        >
+          {tag.variant === "live" && (
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          )}
+          {tag.label}
         </span>
-        ))}
-      </div>
+      ))}
+    </div>
   );
 }
 
@@ -347,80 +347,80 @@ function StatusPills({ tags, size = "sm" }: { tags: Tag[]; size?: "sm" | "md" })
 function ProductCard({ product, onClick }: { product: Product; onClick: () => void }) {
   const colors = accentMap[product.accentColor];
   const lowestPrice = product.planCategories
-      .flatMap((c) => c.plans)
-      .reduce((min, p) => {
-        const num = parseFloat(p.price.replace(/[^\d,]/g, "").replace(",", "."));
-        return num < min ? num : min;
-      }, Infinity);
+    .flatMap((c) => c.plans)
+    .reduce((min, p) => {
+      const num = parseFloat(p.price.replace(/[^\d,]/g, "").replace(",", "."));
+      return num < min ? num : min;
+    }, Infinity);
 
   return (
-      <div className="product-card group relative rounded-2xl overflow-hidden border border-border/30 hover:border-border/60 cursor-pointer bg-surface/40">
-        <button
-            onClick={onClick}
-            className="relative w-full text-left"
-            aria-label={`Ver planos de ${product.name}`}
-        >
-          {/* ── Cover image ── */}
-          <div className="relative h-44 sm:h-52 overflow-hidden">
-            {product.image ? (
-                <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-[filter] duration-300 group-hover:brightness-110"
-                    style={product.imagePosition ? { objectPosition: product.imagePosition } : undefined}
-                />
-            ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-surface to-violet-950/50">
-                  <div
-                      className="absolute inset-0 opacity-[0.05]"
-                      style={{
-                        backgroundImage: "linear-gradient(#8b5cf6 1px, transparent 1px), linear-gradient(90deg, #8b5cf6 1px, transparent 1px)",
-                        backgroundSize: "28px 28px",
-                      }}
-                  />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <Fingerprint className="w-24 h-24 text-violet-500/15" />
-                  </div>
-                </div>
-            )}
-
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/50 to-transparent" />
-          </div>
-
-          {/* ── Card body ── */}
-          <div className="px-5 pb-5 -mt-2 relative">
-            {/* Tags */}
-            <div className="mb-3">
-              <StatusPills tags={product.tags} />
-            </div>
-
-            {/* Title */}
-            <h3 className="text-xl sm:text-2xl font-black tracking-tight text-text-primary">
-              {product.name}
-            </h3>
-
-            {/* Description */}
-            <p className="text-[13px] text-text-secondary/80 mt-2 leading-relaxed line-clamp-2">
-              {product.description}
-            </p>
-
-            {/* Footer: price + CTA */}
-            <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/30">
-              <div>
-                <span className="text-[11px] text-text-secondary uppercase tracking-wider">A partir de</span>
-                <div className="text-lg font-extrabold" style={{ color: colors.text }}>
-                  R${lowestPrice.toFixed(0)}
-                </div>
-              </div>
-              <div className="px-4 py-2 rounded-xl bg-accent/10 border border-accent/20 text-accent text-xs font-bold uppercase tracking-wider group-hover:bg-accent group-hover:text-white transition-all duration-300">
-                Ver detalhes
+    <div className="product-card group relative rounded-2xl overflow-hidden border border-border/30 hover:border-border/60 cursor-pointer bg-surface/40">
+      <button
+        onClick={onClick}
+        className="relative w-full text-left"
+        aria-label={`Ver planos de ${product.name}`}
+      >
+        {/* ── Cover image ── */}
+        <div className="relative h-44 sm:h-52 overflow-hidden">
+          {product.image ? (
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="object-cover transition-[filter] duration-300 group-hover:brightness-110"
+              style={product.imagePosition ? { objectPosition: product.imagePosition } : undefined}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-surface to-violet-950/50">
+              <div
+                className="absolute inset-0 opacity-[0.05]"
+                style={{
+                  backgroundImage: "linear-gradient(#8b5cf6 1px, transparent 1px), linear-gradient(90deg, #8b5cf6 1px, transparent 1px)",
+                  backgroundSize: "28px 28px",
+                }}
+              />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <Fingerprint className="w-24 h-24 text-violet-500/15" />
               </div>
             </div>
+          )}
+
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/50 to-transparent" />
+        </div>
+
+        {/* ── Card body ── */}
+        <div className="px-5 pb-5 -mt-2 relative">
+          {/* Tags */}
+          <div className="mb-3">
+            <StatusPills tags={product.tags} />
           </div>
-        </button>
-      </div>
+
+          {/* Title */}
+          <h3 className="text-xl sm:text-2xl font-black tracking-tight text-text-primary">
+            {product.name}
+          </h3>
+
+          {/* Description */}
+          <p className="text-[13px] text-text-secondary/80 mt-2 leading-relaxed line-clamp-2">
+            {product.description}
+          </p>
+
+          {/* Footer: price + CTA */}
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/30">
+            <div>
+              <span className="text-[11px] text-text-secondary uppercase tracking-wider">A partir de</span>
+              <div className="text-lg font-extrabold" style={{ color: colors.text }}>
+                R${lowestPrice.toFixed(0)}
+              </div>
+            </div>
+            <div className="px-4 py-2 rounded-xl bg-accent/10 border border-accent/20 text-accent text-xs font-bold uppercase tracking-wider group-hover:bg-accent group-hover:text-white transition-all duration-300">
+              Ver detalhes
+            </div>
+          </div>
+        </div>
+      </button>
+    </div>
   );
 }
 
@@ -429,9 +429,9 @@ function ProductCard({ product, onClick }: { product: Product; onClick: () => vo
    ───────────────────────────────────────────────── */
 
 function PlanSelector({
-                        categories,
-                        colors,
-                      }: {
+  categories,
+  colors,
+}: {
   categories: PlanCategory[];
   colors: { border: string; glow: string; text: string; bg: string };
 }) {
@@ -440,111 +440,111 @@ function PlanSelector({
   const current = categories[activeCategory];
 
   return (
-      <div>
-        {/* Category tabs (only if multiple) */}
-        {categories.length > 1 && (
-            <div className="flex gap-2 mb-4">
-              {categories.map((cat, i) => (
-                  <button
-                      key={cat.label}
-                      type="button"
-                      onClick={() => { setActiveCategory(i); setSelectedPlan(null); }}
-                      className="px-4 py-2 text-[13px] font-semibold rounded-lg transition-all duration-200"
-                      style={{
-                        background: activeCategory === i ? colors.bg : "transparent",
-                        color: activeCategory === i ? colors.text : "#71717a",
-                        border: `1px solid ${activeCategory === i ? colors.border : "transparent"}`,
-                      }}
-                  >
-                    {cat.label}
-                  </button>
-              ))}
-            </div>
-        )}
+    <div>
+      {/* Category tabs (only if multiple) */}
+      {categories.length > 1 && (
+        <div className="flex gap-2 mb-4">
+          {categories.map((cat, i) => (
+            <button
+              key={cat.label}
+              type="button"
+              onClick={() => { setActiveCategory(i); setSelectedPlan(null); }}
+              className="px-4 py-2 text-[13px] font-semibold rounded-lg transition-all duration-200"
+              style={{
+                background: activeCategory === i ? colors.bg : "transparent",
+                color: activeCategory === i ? colors.text : "#71717a",
+                border: `1px solid ${activeCategory === i ? colors.border : "transparent"}`,
+              }}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+      )}
 
-        {/* Plans */}
-        <div className="space-y-2.5">
-          {current.plans.map((plan) => {
-            const isSelected = selectedPlan === plan.name;
-            const hasBadge = !!plan.badge;
+      {/* Plans */}
+      <div className="space-y-2.5">
+        {current.plans.map((plan) => {
+          const isSelected = selectedPlan === plan.name;
+          const hasBadge = !!plan.badge;
 
-            return (
-                <button
-                    key={plan.name}
-                    type="button"
-                    onClick={() => setSelectedPlan(plan.name)}
-                    className="plan-card relative w-full rounded-xl p-4 flex items-center justify-between gap-3 text-left transition-all duration-200"
-                    style={{
-                      background: isSelected ? colors.bg : "#1a1a1d",
-                      border: `2px solid ${isSelected ? colors.border : "#27272a"}`,
-                      boxShadow: isSelected ? `0 0 20px ${colors.glow}` : "none",
-                    }}
+          return (
+            <button
+              key={plan.name}
+              type="button"
+              onClick={() => setSelectedPlan(plan.name)}
+              className="plan-card relative w-full rounded-xl p-4 flex items-center justify-between gap-3 text-left transition-all duration-200"
+              style={{
+                background: isSelected ? colors.bg : "#1a1a1d",
+                border: `2px solid ${isSelected ? colors.border : "#27272a"}`,
+                boxShadow: isSelected ? `0 0 20px ${colors.glow}` : "none",
+              }}
+            >
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div
+                  className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                  style={{ background: colors.bg }}
                 >
-                  <div className="flex items-center gap-3.5 min-w-0">
-                    <div
-                        className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
-                        style={{ background: colors.bg }}
-                    >
-                      <plan.icon className="w-4 h-4" style={{ color: colors.text }} />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-bold text-text-primary">{plan.name}</span>
-                        {hasBadge && (
-                            <span
-                                className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-full shrink-0"
-                                style={{
-                                  background: "rgba(249,115,22,0.15)",
-                                  color: "#f97316",
-                                  border: "1px solid rgba(249,115,22,0.3)",
-                                }}
-                            >
+                  <plan.icon className="w-4 h-4" style={{ color: colors.text }} />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-text-primary">{plan.name}</span>
+                    {hasBadge && (
+                      <span
+                        className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-full shrink-0"
+                        style={{
+                          background: "rgba(249,115,22,0.15)",
+                          color: "#f97316",
+                          border: "1px solid rgba(249,115,22,0.3)",
+                        }}
+                      >
                         {plan.badge}
                       </span>
-                        )}
-                      </div>
-                      <p className="text-[12px] mt-0.5 text-text-secondary">{plan.period}</p>
-                    </div>
+                    )}
                   </div>
+                  <p className="text-[12px] mt-0.5 text-text-secondary">{plan.period}</p>
+                </div>
+              </div>
 
-                  <div className="flex items-center gap-3 shrink-0">
-                    <span className="text-lg font-extrabold text-accent">{plan.price}</span>
-                    {isSelected && <CheckCircle2 className="w-5 h-5 text-accent" />}
-                  </div>
-                </button>
-            );
-          })}
-        </div>
-
-        {/* Acquire CTA */}
-        <div className="mt-5 space-y-3">
-          <a
-              href={DISCORD_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(!selectedPlan && "pointer-events-none")}
-          >
-            <Button
-                variant="primary"
-                size="lg"
-                className="w-full font-semibold tracking-wide"
-                disabled={!selectedPlan}
-            >
-              {selectedPlan ? `Adquirir — ${selectedPlan}` : "Selecione um plano"}
-            </Button>
-          </a>
-          <a
-              href={DISCORD_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-          >
-            <Button variant="secondary" size="md" className="w-full mt-2">
-              <ExternalLink className="w-3.5 h-3.5" />
-              Tirar dúvidas no Discord
-            </Button>
-          </a>
-        </div>
+              <div className="flex items-center gap-3 shrink-0">
+                <span className="text-lg font-extrabold text-accent">{plan.price}</span>
+                {isSelected && <CheckCircle2 className="w-5 h-5 text-accent" />}
+              </div>
+            </button>
+          );
+        })}
       </div>
+
+      {/* Acquire CTA */}
+      <div className="mt-5 space-y-3">
+        <a
+          href={DISCORD_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(!selectedPlan && "pointer-events-none")}
+        >
+          <Button
+            variant="primary"
+            size="lg"
+            className="w-full font-semibold tracking-wide"
+            disabled={!selectedPlan}
+          >
+            {selectedPlan ? `Adquirir — ${selectedPlan}` : "Selecione um plano"}
+          </Button>
+        </a>
+        <a
+          href={DISCORD_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button variant="secondary" size="md" className="w-full mt-2">
+            <ExternalLink className="w-3.5 h-3.5" />
+            Tirar dúvidas no Discord
+          </Button>
+        </a>
+      </div>
+    </div>
   );
 }
 
@@ -553,9 +553,9 @@ function PlanSelector({
    ───────────────────────────────────────────────── */
 
 function ProductDrawer({
-                         product,
-                         onClose,
-                       }: {
+  product,
+  onClose,
+}: {
   product: Product;
   onClose: () => void;
 }) {
@@ -580,7 +580,7 @@ function ProductDrawer({
     const drawer = drawerRef.current;
     if (drawer) {
       const focusable = drawer.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
       );
       if (focusable.length > 0) focusable[0].focus();
     }
@@ -592,130 +592,130 @@ function ProductDrawer({
   }, [handleClose]);
 
   return (
-      <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label={`Detalhes de ${product.name}`}>
-        {/* Backdrop */}
-        <div
-            className={cn(
-                "absolute inset-0 bg-black/60 backdrop-blur-sm",
-                closing ? "drawer-overlay-exit" : "drawer-overlay-enter"
-            )}
+    <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label={`Detalhes de ${product.name}`}>
+      {/* Backdrop */}
+      <div
+        className={cn(
+          "absolute inset-0 bg-black/60 backdrop-blur-sm",
+          closing ? "drawer-overlay-exit" : "drawer-overlay-enter"
+        )}
+        onClick={handleClose}
+      />
+
+      {/* Drawer panel */}
+      <div
+        ref={drawerRef}
+        className={cn(
+          /* Mobile: bottom sheet */
+          "absolute bottom-0 left-0 right-0 max-h-[90vh]",
+          "rounded-t-2xl",
+          /* Desktop: right drawer */
+          "lg:top-0 lg:bottom-0 lg:left-auto lg:right-0 lg:w-[520px] lg:max-h-full",
+          "lg:rounded-t-none lg:rounded-l-2xl",
+          "bg-surface border-t border-border/50 lg:border-t-0 lg:border-l lg:border-border/50",
+          "overflow-y-auto overscroll-contain",
+          closing ? "drawer-panel-exit" : "drawer-panel-enter"
+        )}
+      >
+        {/* ── Header with cover ── */}
+        <div className="relative h-40 sm:h-48 overflow-hidden">
+          {product.image ? (
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="object-cover"
+              style={product.imagePosition ? { objectPosition: product.imagePosition } : undefined}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-surface to-violet-950/50">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <Fingerprint className="w-20 h-20 text-violet-500/15" />
+              </div>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent" />
+
+          {/* Close */}
+          <button
             onClick={handleClose}
-        />
+            className="absolute top-4 right-4 w-9 h-9 rounded-xl flex items-center justify-center bg-black/40 backdrop-blur-sm text-text-secondary hover:text-text-primary hover:bg-black/60 transition-colors"
+            aria-label="Fechar"
+          >
+            <X className="w-4 h-4" />
+          </button>
 
-        {/* Drawer panel */}
-        <div
-            ref={drawerRef}
-            className={cn(
-                /* Mobile: bottom sheet */
-                "absolute bottom-0 left-0 right-0 max-h-[90vh]",
-                "rounded-t-2xl",
-                /* Desktop: right drawer */
-                "lg:top-0 lg:bottom-0 lg:left-auto lg:right-0 lg:w-[520px] lg:max-h-full",
-                "lg:rounded-t-none lg:rounded-l-2xl",
-                "bg-surface border-t border-border/50 lg:border-t-0 lg:border-l lg:border-border/50",
-                "overflow-y-auto overscroll-contain",
-                closing ? "drawer-panel-exit" : "drawer-panel-enter"
-            )}
-        >
-          {/* ── Header with cover ── */}
-          <div className="relative h-40 sm:h-48 overflow-hidden">
-            {product.image ? (
-                <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                    style={product.imagePosition ? { objectPosition: product.imagePosition } : undefined}
-                />
-            ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-950 via-surface to-violet-950/50">
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <Fingerprint className="w-20 h-20 text-violet-500/15" />
-                  </div>
+          {/* Name overlay */}
+          <div className="absolute bottom-4 left-5 right-16">
+            <StatusPills tags={product.tags} size="md" />
+            <h2 className="text-2xl font-black text-text-primary tracking-tight mt-2">
+              {product.name}
+            </h2>
+            <p className="text-sm text-text-secondary font-medium mt-0.5">
+              {product.subtitle}
+            </p>
+          </div>
+        </div>
+
+        {/* ── Content ── */}
+        <div className="px-5 pb-8 pt-5 space-y-7">
+          {/* Description */}
+          <p className="text-sm text-text-secondary leading-relaxed">
+            {product.description}
+          </p>
+
+          {/* Features */}
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-text-secondary mb-3">
+              O que inclui
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              {product.features.map((f) => (
+                <div
+                  key={f.label}
+                  className="flex items-center gap-3 px-3.5 py-3 rounded-xl bg-surface-hover/50 border border-border/30"
+                >
+                  <f.icon className="w-4 h-4 text-accent shrink-0" />
+                  <span className="text-[13px] text-text-primary font-medium">{f.label}</span>
                 </div>
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent" />
-
-            {/* Close */}
-            <button
-                onClick={handleClose}
-                className="absolute top-4 right-4 w-9 h-9 rounded-xl flex items-center justify-center bg-black/40 backdrop-blur-sm text-text-secondary hover:text-text-primary hover:bg-black/60 transition-colors"
-                aria-label="Fechar"
-            >
-              <X className="w-4 h-4" />
-            </button>
-
-            {/* Name overlay */}
-            <div className="absolute bottom-4 left-5 right-16">
-              <StatusPills tags={product.tags} size="md" />
-              <h2 className="text-2xl font-black text-text-primary tracking-tight mt-2">
-                {product.name}
-              </h2>
-              <p className="text-sm text-text-secondary font-medium mt-0.5">
-                {product.subtitle}
-              </p>
+              ))}
             </div>
           </div>
 
-          {/* ── Content ── */}
-          <div className="px-5 pb-8 pt-5 space-y-7">
-            {/* Description */}
-            <p className="text-sm text-text-secondary leading-relaxed">
-              {product.description}
-            </p>
-
-            {/* Features */}
-            <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-text-secondary mb-3">
-                O que inclui
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {product.features.map((f) => (
-                    <div
-                        key={f.label}
-                        className="flex items-center gap-3 px-3.5 py-3 rounded-xl bg-surface-hover/50 border border-border/30"
-                    >
-                      <f.icon className="w-4 h-4 text-accent shrink-0" />
-                      <span className="text-[13px] text-text-primary font-medium">{f.label}</span>
-                    </div>
-                ))}
-              </div>
+          {/* Specs */}
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-text-secondary mb-3">
+              Especificações
+            </h3>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
+              {product.specs.map((s) => (
+                <div key={s.label}>
+                  <div className="text-[11px] text-text-secondary uppercase tracking-wider">{s.label}</div>
+                  <div className="text-sm text-text-primary font-semibold mt-0.5">{s.value}</div>
+                </div>
+              ))}
             </div>
+          </div>
 
-            {/* Specs */}
-            <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-text-secondary mb-3">
-                Especificações
-              </h3>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
-                {product.specs.map((s) => (
-                    <div key={s.label}>
-                      <div className="text-[11px] text-text-secondary uppercase tracking-wider">{s.label}</div>
-                      <div className="text-sm text-text-primary font-semibold mt-0.5">{s.value}</div>
-                    </div>
-                ))}
-              </div>
-            </div>
+          {/* Divider */}
+          <div className="h-px bg-border/40" />
 
-            {/* Divider */}
-            <div className="h-px bg-border/40" />
+          {/* Plans */}
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-text-secondary mb-3">
+              Planos disponíveis
+            </h3>
+            <PlanSelector categories={product.planCategories} colors={colors} />
+          </div>
 
-            {/* Plans */}
-            <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-text-secondary mb-3">
-                Planos disponíveis
-              </h3>
-              <PlanSelector categories={product.planCategories} colors={colors} />
-            </div>
-
-            {/* Footer note */}
-            <div className="flex items-center justify-center gap-2 text-[11px] text-text-secondary/60 pt-2">
-              <Shield className="w-3 h-3" />
-              <span>Pagamento seguro via PIX ou cartão. Garantia de 24h.</span>
-            </div>
+          {/* Footer note */}
+          <div className="flex items-center justify-center gap-2 text-[11px] text-text-secondary/60 pt-2">
+            <Shield className="w-3 h-3" />
+            <span>Pagamento seguro via PIX ou cartão. Garantia de 24h.</span>
           </div>
         </div>
       </div>
+    </div>
   );
 }
 
@@ -728,64 +728,64 @@ export function Products() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   return (
-      <>
-        <section
-            id="products"
-            ref={sectionRef as React.RefObject<HTMLElement>}
-            className="relative py-24 sm:py-32"
-        >
-          {/* Background */}
-          <div className="absolute inset-0 bg-surface/20" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-accent/[0.03] rounded-full blur-[140px]" />
+    <>
+      <section
+        id="products"
+        ref={sectionRef as React.RefObject<HTMLElement>}
+        className="relative py-24 sm:py-32"
+      >
+        {/* Background */}
+        <div className="absolute inset-0 bg-surface/20" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-accent/[0.03] rounded-full blur-[140px]" />
 
-          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Section header */}
-            <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 section-fade-in">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section header */}
+          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 section-fade-in">
             <span className="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent bg-accent/10 rounded-full mb-4 border border-accent/20">
               Cheats
             </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-text-primary">
-                Escolha sua{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-text-primary">
+              Escolha sua{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-amber-500">
                 ferramenta
               </span>
-              </h2>
-              <p className="mt-4 text-base sm:text-lg text-text-secondary leading-relaxed">
-                Selecione um jogo para explorar as ferramentas disponíveis.
-                <br className="hidden sm:block" />
-                Todos os scripts atualizados e 100% indetectáveis.
-              </p>
-            </div>
-
-            {/* Product grid — 2 cols desktop, 1 col mobile */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {products.map((product, index) => (
-                  <div
-                      key={product.id}
-                      className={cn(
-                          "section-fade-in",
-                          `section-delay-${index + 1}`,
-                          /* Last item (odd count) spans full width on desktop */
-                          products.length % 2 !== 0 && index === products.length - 1 && "md:col-span-2 md:max-w-[calc(50%-0.625rem)] md:mx-auto"
-                      )}
-                  >
-                    <ProductCard
-                        product={product}
-                        onClick={() => setSelectedProduct(product)}
-                    />
-                  </div>
-              ))}
-            </div>
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-text-secondary leading-relaxed">
+              Selecione um jogo para explorar as ferramentas disponíveis.
+              <br className="hidden sm:block" />
+              Todos os scripts atualizados e 100% indetectáveis.
+            </p>
           </div>
-        </section>
 
-        {/* Drawer */}
-        {selectedProduct && (
-            <ProductDrawer
-                product={selectedProduct}
-                onClose={() => setSelectedProduct(null)}
-            />
-        )}
-      </>
+          {/* Product grid — 2 cols desktop, 1 col mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {products.map((product, index) => (
+              <div
+                key={product.id}
+                className={cn(
+                  "section-fade-in",
+                  `section-delay-${index + 1}`,
+                  /* Last item (odd count) spans full width on desktop */
+                  products.length % 2 !== 0 && index === products.length - 1 && "md:col-span-2 md:max-w-[calc(50%-0.625rem)] md:mx-auto"
+                )}
+              >
+                <ProductCard
+                  product={product}
+                  onClick={() => setSelectedProduct(product)}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Drawer */}
+      {selectedProduct && (
+        <ProductDrawer
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
+    </>
   );
 }

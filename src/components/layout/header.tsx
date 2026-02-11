@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LoginModal } from "@/components/auth/login-modal";
 import { cn } from "@/lib/utils";
 
 const DISCORD_URL = "https://discord.gg/solarhub";
@@ -31,6 +32,11 @@ function DiscordIcon({ className }: { className?: string }) {
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const loginBtnRef = useRef<HTMLButtonElement>(null);
+  const loginBtnMobileRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -38,156 +44,197 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const openLogin = useCallback(() => {
+    setMobileMenuOpen(false);
+    setLoginOpen(true);
+  }, []);
+
+  const handleLoginSuccess = useCallback(() => {
+    setIsLoggedIn(true);
+    setLoginOpen(false);
+  }, []);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      <div
-        className={cn(
-          "transition-all duration-300 border-b",
-          scrolled
-            ? "bg-background/80 backdrop-blur-xl border-border/50 shadow-sm shadow-black/5"
-            : "bg-transparent border-transparent"
-        )}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <Image
-                src="/icon.png"
-                alt="SolarHub"
-                width={30}
-                height={30}
-                className="w-[30px] h-[30px] group-hover:scale-105 transition-transform duration-200"
-              />
-              <span className="text-base font-bold text-text-primary tracking-tight">
-                Solar<span className="text-accent">Hub</span>
-              </span>
-            </Link>
-
-            {/* Nav — center */}
-            <nav className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) =>
-                link.external ? (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="relative px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="relative px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
-                  >
-                    {link.label}
-                  </Link>
-                )
-              )}
-            </nav>
-
-            {/* Actions — right */}
-            <div className="hidden md:flex items-center gap-2.5">
-              <a
-                href={DISCORD_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
-              >
-                <DiscordIcon className="w-4 h-4" />
-                Discord
-              </a>
-
-              <div className="w-px h-5 bg-border/60" />
-
-              <Link href="/login">
-                <Button variant="primary" size="sm">
-                  Login
-                </Button>
-              </Link>
-            </div>
-
-            {/* Mobile toggle */}
-            <div className="flex md:hidden items-center gap-1">
-              <button
-                className="p-2 -mr-2 text-text-secondary hover:text-text-primary transition-colors"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label="Menu"
-                aria-expanded={mobileMenuOpen}
-              >
-              {mobileMenuOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <Menu className="w-5 h-5" />
-              )}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile menu */}
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50">
         <div
           className={cn(
-            "md:hidden overflow-hidden transition-all duration-300",
-            mobileMenuOpen
-              ? "max-h-96 opacity-100"
-              : "max-h-0 opacity-0"
+            "transition-all duration-300 border-b",
+            scrolled
+              ? "bg-background/80 backdrop-blur-xl border-border/50 shadow-sm shadow-black/5"
+              : "bg-transparent border-transparent"
           )}
         >
-          <div className="bg-background/95 backdrop-blur-xl border-t border-border/50">
-            <div className="max-w-7xl mx-auto px-4 py-4 space-y-1">
-              {navLinks.map((link) =>
-                link.external ? (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="block px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              )}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
 
-              <div className="pt-3 mt-3 border-t border-border/50 space-y-2">
+              {/* Logo */}
+              <Link href="/" className="flex items-center gap-2.5 group">
+                <Image
+                  src="/icon.png"
+                  alt="SolarHub"
+                  width={30}
+                  height={30}
+                  className="w-[30px] h-[30px] group-hover:scale-105 transition-transform duration-200"
+                />
+                <span className="text-base font-bold text-text-primary tracking-tight">
+                  Solar<span className="text-accent">Hub</span>
+                </span>
+              </Link>
+
+              {/* Nav — center */}
+              <nav className="hidden md:flex items-center gap-1">
+                {navLinks.map((link) =>
+                  link.external ? (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="relative px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="relative px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
+                    >
+                      {link.label}
+                    </Link>
+                  )
+                )}
+              </nav>
+
+              {/* Actions — right */}
+              <div className="hidden md:flex items-center gap-2.5">
                 <a
                   href={DISCORD_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
                 >
                   <DiscordIcon className="w-4 h-4" />
                   Discord
                 </a>
 
-                <div className="px-1">
-                  <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="primary" size="md" className="w-full">
-                      Login
-                    </Button>
-                  </Link>
+                <div className="w-px h-5 bg-border/60" />
+
+                {isLoggedIn ? (
+                  <Button variant="secondary" size="sm" className="gap-1.5">
+                    <User className="w-3.5 h-3.5" />
+                    Conta
+                  </Button>
+                ) : (
+                  <Button
+                    ref={loginBtnRef}
+                    variant="primary"
+                    size="sm"
+                    onClick={openLogin}
+                  >
+                    Login
+                  </Button>
+                )}
+              </div>
+
+              {/* Mobile toggle */}
+              <div className="flex md:hidden items-center gap-1">
+                <button
+                  className="p-2 -mr-2 text-text-secondary hover:text-text-primary transition-colors"
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  aria-label="Menu"
+                  aria-expanded={mobileMenuOpen}
+                >
+                  {mobileMenuOpen ? (
+                    <X className="w-5 h-5" />
+                  ) : (
+                    <Menu className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile menu */}
+          <div
+            className={cn(
+              "md:hidden overflow-hidden transition-all duration-300",
+              mobileMenuOpen
+                ? "max-h-96 opacity-100"
+                : "max-h-0 opacity-0"
+            )}
+          >
+            <div className="bg-background/95 backdrop-blur-xl border-t border-border/50">
+              <div className="max-w-7xl mx-auto px-4 py-4 space-y-1">
+                {navLinks.map((link) =>
+                  link.external ? (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  )
+                )}
+
+                <div className="pt-3 mt-3 border-t border-border/50 space-y-2">
+                  <a
+                    href={DISCORD_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface/60 rounded-lg transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <DiscordIcon className="w-4 h-4" />
+                    Discord
+                  </a>
+
+                  <div className="px-1">
+                    {isLoggedIn ? (
+                      <Button variant="secondary" size="md" className="w-full gap-1.5">
+                        <User className="w-3.5 h-3.5" />
+                        Conta
+                      </Button>
+                    ) : (
+                      <Button
+                        ref={loginBtnMobileRef}
+                        variant="primary"
+                        size="md"
+                        className="w-full"
+                        onClick={openLogin}
+                      >
+                        Login
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Login Modal */}
+      <LoginModal
+        open={loginOpen}
+        onClose={() => setLoginOpen(false)}
+        onSuccess={handleLoginSuccess}
+        triggerRef={loginBtnRef}
+      />
+    </>
   );
 }

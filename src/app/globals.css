@@ -563,6 +563,70 @@ body {
 }
 
 /* ═══════════════════════════════════════════════
+   LOGIN MODAL — overlay + card animations
+   ═══════════════════════════════════════════════ */
+
+/* Overlay fade in */
+.login-modal-overlay {
+  animation: loginOverlayIn 0.2s ease-out forwards;
+}
+
+@keyframes loginOverlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Card: fade + slide up */
+.login-modal-card {
+  animation: loginCardIn 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+/* Form content transition on tab switch */
+.auth-form-transition {
+  animation: authFormSwitch 0.25s ease-out forwards;
+}
+
+@keyframes authFormSwitch {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loginCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .login-modal-overlay {
+    animation: none;
+    opacity: 1;
+  }
+  .login-modal-card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .auth-form-transition {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════
    PRODUCT DRAWER — slide from right (desktop) / bottom (mobile)
    ═══════════════════════════════════════════════ */
 
