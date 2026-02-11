@@ -95,11 +95,14 @@ body {
    SHOWCASE — Editorial Jett + "ALÉM DO LIMITE"
    ═══════════════════════════════════════════════ */
 
-/* Jett editorial — clean, no dark halo */
+/* Jett desktop — zero shadow, clean cut */
 .jett-editorial {
-  filter: drop-shadow(0 0 20px rgba(249, 115, 22, 0.06))
-  drop-shadow(0 8px 32px rgba(0, 0, 0, 0.15));
   animation: jettFloat 6s ease-in-out infinite;
+}
+
+/* Jett mobile — clean */
+.jett-editorial-mobile {
+  /* no filter */
 }
 
 @keyframes jettFloat {
@@ -109,7 +112,7 @@ body {
 
 /* Ghost headline (back layer) */
 .showcase-headline-back {
-  opacity: 0.05;
+  opacity: 0.06;
   will-change: transform;
 }
 
@@ -117,26 +120,26 @@ body {
 .showcase-headline-front {
   will-change: transform;
   mask-image: radial-gradient(
-          ellipse 20% 42% at 50% 52%,
+          ellipse 18% 36% at 50% 46%,
           transparent 0%,
-          transparent 55%,
-          black 80%
+          transparent 45%,
+          black 75%
   );
   -webkit-mask-image: radial-gradient(
-          ellipse 20% 42% at 50% 52%,
+          ellipse 18% 36% at 50% 46%,
           transparent 0%,
-          transparent 55%,
-          black 80%
+          transparent 45%,
+          black 75%
   );
 }
 
-/* Text outline for depth separation (no dark shadow) */
+/* Text outline for depth — crisp edge, no dark halo */
 .showcase-text-outline {
   text-shadow:
-          0 0 1px rgba(255, 255, 255, 0.06),
-          0 1px 2px rgba(0, 0, 0, 0.2);
+          0 0 1px rgba(255, 255, 255, 0.08),
+          0 0 40px rgba(249, 115, 22, 0.03);
   paint-order: stroke fill;
-  -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.04);
+  -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.06);
 }
 
 /* Scribble SVG draw-in animation */
@@ -193,6 +196,9 @@ body {
   }
   .jett-editorial {
     animation: none;
+  }
+  .jett-editorial-mobile {
+    filter: none;
   }
   .micro-label-pulse {
     animation: none;
