@@ -227,10 +227,43 @@ body {
 
 .esp-box {
   position: absolute;
-  inset: 22% 18% 16% 18%;
+  inset: 20% 16% 14% 16%;
   z-index: 15;
   pointer-events: none;
   transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile ESP — simplified, just corners */
+.esp-box-mobile {
+  position: absolute;
+  inset: 18% 14% 12% 14%;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.esp-box-mobile::before,
+.esp-box-mobile::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: inherit;
+}
+
+.esp-box-mobile::before {
+  top: 0;
+  left: 0;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+  border-color: inherit;
+}
+
+.esp-box-mobile::after {
+  top: 0;
+  right: 0;
+  border-top: 1.5px solid;
+  border-right: 1.5px solid;
+  border-color: inherit;
 }
 
 .esp-box::before,
@@ -382,24 +415,25 @@ body {
   --trace-glow: rgba(249, 115, 22, 0.22);
   position: relative;
   border-radius: var(--border-radius);
+  overflow: hidden;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
   box-shadow 0.3s ease;
 }
 
-/* Tracing border — sharp line */
+/* Tracing border — sharp inset line (contained) */
 .hud-card::before {
   content: '';
   position: absolute;
-  inset: -1px;
+  inset: 0;
   border-radius: var(--border-radius);
-  padding: 1px;
+  padding: 1.5px;
   background: conic-gradient(
           from var(--hud-angle),
           transparent 0%,
           transparent 65%,
-          color-mix(in srgb, var(--trace-color) 50%, transparent) 78%,
+          color-mix(in srgb, var(--trace-color) 55%, transparent) 78%,
           var(--trace-color) 85%,
-          color-mix(in srgb, var(--trace-color) 50%, transparent) 92%,
+          color-mix(in srgb, var(--trace-color) 55%, transparent) 92%,
           transparent 100%
   );
   -webkit-mask:
@@ -416,20 +450,20 @@ body {
   z-index: 1;
 }
 
-/* Tracing glow — soft blur behind the sharp line */
+/* Tracing glow — soft inner glow (contained) */
 .hud-card::after {
   content: '';
   position: absolute;
-  inset: -3px;
+  inset: 0;
   border-radius: var(--border-radius);
-  padding: 3px;
+  padding: 4px;
   background: conic-gradient(
           from var(--hud-angle),
           transparent 0%,
           transparent 60%,
-          color-mix(in srgb, var(--trace-color) 12%, transparent) 76%,
+          color-mix(in srgb, var(--trace-color) 14%, transparent) 76%,
           var(--trace-glow) 85%,
-          color-mix(in srgb, var(--trace-color) 12%, transparent) 94%,
+          color-mix(in srgb, var(--trace-color) 14%, transparent) 94%,
           transparent 100%
   );
   -webkit-mask:
@@ -441,7 +475,7 @@ body {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0;
-  filter: blur(6px);
+  filter: blur(4px);
   transition: opacity 0.35s ease;
   pointer-events: none;
   z-index: 0;
