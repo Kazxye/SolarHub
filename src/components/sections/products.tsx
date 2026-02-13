@@ -367,7 +367,7 @@ function ProductCard({ product, onClick }: { product: Product; onClick: () => vo
                     src={product.image}
                     alt={product.name}
                     fill
-                    className="object-cover transition-[filter] duration-300 group-hover:brightness-110"
+                    className="object-cover transition-[filter,transform] duration-300  scale-100"
                     style={product.imagePosition ? { objectPosition: product.imagePosition } : undefined}
                 />
             ) : (
