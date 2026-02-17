@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, type ReactNode } from "react";
+import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,14 +15,15 @@ import {
 import { updateProfile, changePassword } from "@/lib/profile-data";
 
 const DISCORD_URL = "https://discord.gg/solarhub";
+const HEADER_OFFSET = 112; // px — fixed header height + breathing room
 
 /* ═══════════════════════════════════════════════════
-   SHARED PRIMITIVES
+   SECTION CONFIG
    ═══════════════════════════════════════════════════ */
 
-type TabId = "overview" | "purchases" | "account" | "security" | "support";
+type SectionId = "overview" | "purchases" | "account" | "security" | "support";
 
-const TABS: { id: TabId; label: string; icon: typeof User }[] = [
+const SECTIONS: { id: SectionId; label: string; icon: typeof User }[] = [
   { id: "overview", label: "Visão geral", icon: User },
   { id: "purchases", label: "Compras", icon: ShoppingBag },
   { id: "account", label: "Dados da conta", icon: Settings },
@@ -30,13 +31,68 @@ const TABS: { id: TabId; label: string; icon: typeof User }[] = [
   { id: "support", label: "Suporte", icon: HeadphonesIcon },
 ];
 
-function fmtDate(iso: string) {
-  return new Date(iso).toLocaleDateString("pt-BR", {
-    day: "2-digit", month: "short", year: "numeric",
+/* ═══════════════════════════════════════════════════
+   useScrollSpy — IntersectionObserver
+   ═══════════════════════════════════════════════════ */
+
+function useScrollSpy(ids: string[]): string {
+  const [active, setActive] = useState(ids[0]);
+
+  useEffect(() => {
+    const elements = ids
+        .map((id) => document.getElementById(id))
+        .filter(Boolean) as HTMLElement[];
+
+    if (elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+          // Pick the first intersecting entry (top-most visible section)
+          const visible = entries
+              .filter((e) => e.isIntersecting)
+              .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+          if (visible.length > 0) {
+            setActive(visible[0].target.id);
+          }
+        },
+        { rootMargin: "-25% 0px -65% 0px", threshold: 0 }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [ids]);
+
+  return active;
+}
+
+/* ═══════════════════════════════════════════════════
+   SCROLL HELPER
+   ═══════════════════════════════════════════════════ */
+
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+
+  window.scrollTo({
+    top,
+    behavior: prefersReduced ? "instant" : "smooth",
   });
 }
 
-/* ── Feedback ── */
+/* ═══════════════════════════════════════════════════
+   SHARED PRIMITIVES
+   ═══════════════════════════════════════════════════ */
+
+function fmtDate(iso?: string | null): string {
+  if (!iso) return "Não disponível";
+  return new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit", month: "2-digit", year: "numeric",
+  }).format(new Date(iso));
+}
 
 function Feedback({ type, children }: { type: "success" | "error"; children: ReactNode }) {
   return (
@@ -55,8 +111,6 @@ function Feedback({ type, children }: { type: "success" | "error"; children: Rea
       </div>
   );
 }
-
-/* ── Form input ── */
 
 function FormField({ id, label, icon: Icon, type = "text", value, onChange, disabled }: {
   id: string; label: string; icon: typeof User;
@@ -85,24 +139,24 @@ function FormField({ id, label, icon: Icon, type = "text", value, onChange, disa
 }
 
 /* ═══════════════════════════════════════════════════
-   TAB PANELS
+   STACKED SECTIONS
    ═══════════════════════════════════════════════════ */
 
 /* ── Overview ── */
 
-function OverviewTab() {
+function OverviewSection() {
   const { user } = useAuth();
-
   return (
-      <div className="space-y-6">
-        {/* User card */}
+      <section id="overview" className="scroll-mt-28 space-y-6">
+        <h2 className="text-lg font-bold text-text-primary">Visão geral</h2>
+
         <div className="rounded-2xl border border-border/40 bg-surface/30 p-6">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center shrink-0">
               <User className="w-6 h-6 text-accent" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-lg font-bold text-text-primary truncate">{user!.name}</h2>
+              <p className="text-lg font-bold text-text-primary truncate">{user!.name}</p>
               <div className="flex items-center gap-1.5 mt-1 text-sm text-text-secondary">
                 <Mail className="w-3.5 h-3.5 shrink-0" />
                 <span className="truncate">{user!.email}</span>
@@ -115,7 +169,6 @@ function OverviewTab() {
           </div>
         </div>
 
-        {/* Info cards */}
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-2xl border border-border/30 bg-surface/30 p-5">
             <div className="flex items-center gap-3 mb-3">
@@ -137,13 +190,37 @@ function OverviewTab() {
             <div className="text-xl font-bold text-text-primary">{fmtDate(user!.createdAt)}</div>
           </div>
         </div>
-      </div>
+      </section>
+  );
+}
+
+/* ── Purchases (empty) ── */
+
+function PurchasesSection() {
+  return (
+      <section id="purchases" className="scroll-mt-28">
+        <h2 className="text-lg font-bold text-text-primary mb-4">Compras</h2>
+
+        <div className="text-center py-16 rounded-2xl border border-border/30 bg-surface/20">
+          <div className="w-12 h-12 rounded-2xl bg-surface-hover/60 flex items-center justify-center mx-auto mb-4">
+            <ShoppingBag className="w-5 h-5 text-text-secondary" />
+          </div>
+          <p className="text-base font-medium text-text-primary">Você ainda não possui compras</p>
+          <p className="mt-1.5 text-sm text-text-secondary mb-6">Explore nossos produtos e comece agora.</p>
+          <Link href="/#products">
+            <Button size="md">
+              Explorar produtos
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Button>
+          </Link>
+        </div>
+      </section>
   );
 }
 
 /* ── Account ── */
 
-function AccountTab() {
+function AccountSection() {
   const { user, login } = useAuth();
   const [name, setName] = useState(user?.name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
@@ -152,8 +229,7 @@ function AccountTab() {
 
   const handleSave = useCallback(async () => {
     if (!name.trim() || !email.trim()) {
-      setFeedback({ type: "error", msg: "Preencha todos os campos." });
-      return;
+      setFeedback({ type: "error", msg: "Preencha todos os campos." }); return;
     }
     setLoading(true);
     setFeedback(null);
@@ -168,10 +244,9 @@ function AccountTab() {
   }, [name, email, user, login]);
 
   return (
-      <div>
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-4">
-          Dados da conta
-        </h2>
+      <section id="account" className="scroll-mt-28">
+        <h2 className="text-lg font-bold text-text-primary mb-4">Dados da conta</h2>
+
         <div className="rounded-2xl border border-border/40 bg-surface/30 p-6 space-y-5">
           {feedback && <Feedback type={feedback.type}>{feedback.msg}</Feedback>}
           <FormField id="acc-name" label="Nome" icon={User} value={name} onChange={setName} disabled={loading} />
@@ -182,13 +257,13 @@ function AccountTab() {
             </Button>
           </div>
         </div>
-      </div>
+      </section>
   );
 }
 
 /* ── Security ── */
 
-function SecurityTab() {
+function SecuritySection() {
   const { logout } = useAuth();
   const [curPw, setCurPw] = useState("");
   const [newPw, setNewPw] = useState("");
@@ -219,9 +294,10 @@ function SecurityTab() {
   }, [curPw, newPw, confirmPw]);
 
   return (
-      <div className="space-y-6">
+      <section id="security" className="scroll-mt-28 space-y-6">
         <div>
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-4">Alterar senha</h2>
+          <h2 className="text-lg font-bold text-text-primary mb-4">Segurança</h2>
+
           <div className="rounded-2xl border border-border/40 bg-surface/30 p-6 space-y-5">
             {feedback && <Feedback type={feedback.type}>{feedback.msg}</Feedback>}
             <FormField id="sec-curpw" label="Senha atual" icon={Lock} type="password" value={curPw} onChange={setCurPw} disabled={loading} />
@@ -235,7 +311,6 @@ function SecurityTab() {
           </div>
         </div>
 
-        {/* Logout */}
         <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.04] p-6">
           <h3 className="text-sm font-semibold text-text-primary mb-1.5">Sair da conta</h3>
           <p className="text-xs text-text-secondary mb-4 leading-relaxed">
@@ -249,13 +324,13 @@ function SecurityTab() {
             Sair da conta
           </button>
         </div>
-      </div>
+      </section>
   );
 }
 
 /* ── Support ── */
 
-function SupportTab() {
+function SupportSection() {
   const cards = [
     { icon: MessageCircle, title: "Discord", desc: "Fale com a equipe em tempo real", href: DISCORD_URL, external: true },
     { icon: HeadphonesIcon, title: "Abrir ticket", desc: "Suporte via ticket no Discord", href: DISCORD_URL, external: true },
@@ -264,8 +339,9 @@ function SupportTab() {
   ];
 
   return (
-      <div>
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-4">Central de suporte</h2>
+      <section id="support" className="scroll-mt-28">
+        <h2 className="text-lg font-bold text-text-primary mb-4">Suporte</h2>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {cards.map((card) => {
             const Icon = card.icon;
@@ -291,7 +367,7 @@ function SupportTab() {
             );
           })}
         </div>
-      </div>
+      </section>
   );
 }
 
@@ -299,18 +375,21 @@ function SupportTab() {
    MAIN EXPORT
    ═══════════════════════════════════════════════════ */
 
+const SECTION_IDS = SECTIONS.map((s) => s.id);
+
 export function ProfileContent() {
   const { isLoggedIn, login } = useAuth();
-  const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [loginOpen, setLoginOpen] = useState(false);
   const loginBtnRef = useRef<HTMLButtonElement>(null);
+
+  const activeSection = useScrollSpy(SECTION_IDS);
 
   const handleLoginSuccess = useCallback(() => {
     login({
       id: "usr_001",
       name: "Jogador",
       email: "jogador@email.com",
-      createdAt: "2024-08-15T00:00:00Z",
+      createdAt: null,
     });
     setLoginOpen(false);
   }, [login]);
@@ -367,7 +446,7 @@ export function ProfileContent() {
         </div>
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 pb-20">
-          {/* Header */}
+          {/* Page header */}
           <div className="mb-10 sm:mb-12">
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
               Perfil
@@ -377,81 +456,68 @@ export function ProfileContent() {
             </p>
           </div>
 
-          {/* Layout */}
+          {/* Layout: sidebar + stacked content */}
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
-            {/* Sidebar — desktop */}
+
+            {/* Sidebar — desktop (scroll spy) */}
             <aside className="hidden lg:block w-52 shrink-0">
-              <nav className="sticky top-28 space-y-1" aria-label="Navegação do perfil" role="tablist">
-                {TABS.map((tab) => {
-                  const Icon = tab.icon;
+              <nav className="sticky top-28 space-y-1" aria-label="Navegação do perfil">
+                {SECTIONS.map((sec) => {
+                  const Icon = sec.icon;
+                  const isActive = activeSection === sec.id;
                   return (
                       <button
-                          key={tab.id}
-                          onClick={() => setActiveTab(tab.id)}
-                          role="tab"
-                          aria-selected={activeTab === tab.id}
+                          key={sec.id}
+                          onClick={() => scrollToSection(sec.id)}
+                          aria-current={isActive ? "true" : undefined}
                           className={cn(
                               "w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[13px] font-medium rounded-xl transition-all duration-200 text-left cursor-pointer",
-                              activeTab === tab.id
+                              isActive
                                   ? "text-accent bg-accent/[0.08]"
                                   : "text-text-secondary hover:text-text-primary hover:bg-surface-hover/60"
                           )}
                       >
                         <Icon className="w-4 h-4 shrink-0" />
-                        {tab.label}
+                        {sec.label}
                       </button>
                   );
                 })}
               </nav>
             </aside>
 
-            {/* Tabs — mobile */}
-            <div className="lg:hidden overflow-x-auto scrollbar-none -mx-4 px-4" role="tablist" aria-label="Navegação do perfil">
-              <div className="flex gap-1.5 min-w-max pb-1">
-                {TABS.map((tab) => {
-                  const Icon = tab.icon;
+            {/* Mobile nav — horizontal scroll spy */}
+            <div className="lg:hidden overflow-x-auto scrollbar-none -mx-4 px-4">
+              <nav className="flex gap-1.5 min-w-max pb-1" aria-label="Navegação do perfil">
+                {SECTIONS.map((sec) => {
+                  const Icon = sec.icon;
+                  const isActive = activeSection === sec.id;
                   return (
                       <button
-                          key={tab.id}
-                          onClick={() => setActiveTab(tab.id)}
-                          role="tab"
-                          aria-selected={activeTab === tab.id}
+                          key={sec.id}
+                          onClick={() => scrollToSection(sec.id)}
+                          aria-current={isActive ? "true" : undefined}
                           className={cn(
                               "flex items-center gap-1.5 px-3.5 py-2 text-[13px] font-medium rounded-xl border transition-all duration-200 whitespace-nowrap cursor-pointer",
-                              activeTab === tab.id
+                              isActive
                                   ? "bg-accent/10 border-accent/30 text-accent"
                                   : "bg-surface/40 border-border/30 text-text-secondary"
                           )}
                       >
                         <Icon className="w-3.5 h-3.5" />
-                        {tab.label}
+                        {sec.label}
                       </button>
                   );
                 })}
-              </div>
+              </nav>
             </div>
 
-            {/* Content */}
-            <div className="flex-1 min-w-0" role="tabpanel">
-              {activeTab === "overview" && <OverviewTab />}
-              {activeTab === "purchases" && (
-                  <div className="text-center py-16 rounded-2xl border border-border/30 bg-surface/20">
-                    <div className="w-12 h-12 rounded-2xl bg-surface-hover/60 flex items-center justify-center mx-auto mb-4">
-                      <ShoppingBag className="w-5 h-5 text-text-secondary" />
-                    </div>
-                    <p className="text-base font-medium text-text-primary">Você ainda não possui compras</p>
-                    <p className="mt-1.5 text-sm text-text-secondary mb-6">Explore nossos produtos e comece agora.</p>
-                    <Link href="/#products">
-                      <Button size="md">
-                        Explorar produtos
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </Button>
-                    </Link>
-                  </div>
-              )}
-              {activeTab === "account" && <AccountTab />}
-              {activeTab === "security" && <SecurityTab />}
-              {activeTab === "support" && <SupportTab />}
+            {/* Stacked sections */}
+            <div className="flex-1 min-w-0 space-y-16">
+              <OverviewSection />
+              <PurchasesSection />
+              <AccountSection />
+              <SecuritySection />
+              <SupportSection />
             </div>
           </div>
         </div>
