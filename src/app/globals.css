@@ -120,24 +120,24 @@ body {
 .showcase-headline-front {
   will-change: transform;
   mask-image: radial-gradient(
-          ellipse 18% 36% at 50% 46%,
-          transparent 0%,
-          transparent 45%,
-          black 75%
+    ellipse 18% 36% at 50% 46%,
+    transparent 0%,
+    transparent 45%,
+    black 75%
   );
   -webkit-mask-image: radial-gradient(
-          ellipse 18% 36% at 50% 46%,
-          transparent 0%,
-          transparent 45%,
-          black 75%
+    ellipse 18% 36% at 50% 46%,
+    transparent 0%,
+    transparent 45%,
+    black 75%
   );
 }
 
 /* Text outline for depth — crisp edge, no dark halo */
 .showcase-text-outline {
   text-shadow:
-          0 0 1px rgba(255, 255, 255, 0.08),
-          0 0 40px rgba(249, 115, 22, 0.03);
+    0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 40px rgba(249, 115, 22, 0.03);
   paint-order: stroke fill;
   -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.06);
 }
@@ -222,7 +222,7 @@ body {
 
 .esp-container:hover .esp-character {
   filter: drop-shadow(0 0 24px rgba(249, 115, 22, 0.10))
-  drop-shadow(0 0 60px rgba(249, 115, 22, 0.06));
+          drop-shadow(0 0 60px rgba(249, 115, 22, 0.06));
 }
 
 .esp-box {
@@ -417,7 +417,7 @@ body {
   border-radius: var(--border-radius);
   overflow: hidden;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-  box-shadow 0.3s ease;
+              box-shadow 0.3s ease;
 }
 
 /* Tracing border — sharp inset line (contained) */
@@ -428,20 +428,20 @@ body {
   border-radius: var(--border-radius);
   padding: 1.5px;
   background: conic-gradient(
-          from var(--hud-angle),
-          transparent 0%,
-          transparent 65%,
-          color-mix(in srgb, var(--trace-color) 55%, transparent) 78%,
-          var(--trace-color) 85%,
-          color-mix(in srgb, var(--trace-color) 55%, transparent) 92%,
-          transparent 100%
+    from var(--hud-angle),
+    transparent 0%,
+    transparent 65%,
+    color-mix(in srgb, var(--trace-color) 55%, transparent) 78%,
+    var(--trace-color) 85%,
+    color-mix(in srgb, var(--trace-color) 55%, transparent) 92%,
+    transparent 100%
   );
   -webkit-mask:
-          linear-gradient(#fff 0 0) content-box,
-          linear-gradient(#fff 0 0);
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   mask:
-          linear-gradient(#fff 0 0) content-box,
-          linear-gradient(#fff 0 0);
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0;
@@ -458,20 +458,20 @@ body {
   border-radius: var(--border-radius);
   padding: 4px;
   background: conic-gradient(
-          from var(--hud-angle),
-          transparent 0%,
-          transparent 60%,
-          color-mix(in srgb, var(--trace-color) 14%, transparent) 76%,
-          var(--trace-glow) 85%,
-          color-mix(in srgb, var(--trace-color) 14%, transparent) 94%,
-          transparent 100%
+    from var(--hud-angle),
+    transparent 0%,
+    transparent 60%,
+    color-mix(in srgb, var(--trace-color) 14%, transparent) 76%,
+    var(--trace-glow) 85%,
+    color-mix(in srgb, var(--trace-color) 14%, transparent) 94%,
+    transparent 100%
   );
   -webkit-mask:
-          linear-gradient(#fff 0 0) content-box,
-          linear-gradient(#fff 0 0);
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   mask:
-          linear-gradient(#fff 0 0) content-box,
-          linear-gradient(#fff 0 0);
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0;
@@ -519,7 +519,7 @@ body {
   grid-template-rows: 0fr;
   opacity: 0;
   transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-  opacity 0.25s ease;
+              opacity 0.25s ease;
 }
 
 .faq-accordion-body > div {
@@ -566,8 +566,8 @@ body {
 
 .product-card {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-  border-color 0.3s ease,
-  box-shadow 0.3s ease;
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
 }
 
 .product-card:hover {
@@ -797,3 +797,37 @@ body {
     animation-duration: 0.01s;
   }
 }
+
+/* ═══════════════════════════════════════════
+   PROFILE — Drawer & Overlay
+   ═══════════════════════════════════════════ */
+
+.profile-drawer-enter {
+  animation: profileDrawerSlide 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+.profile-overlay-enter {
+  animation: profileOverlayFade 0.25s ease forwards;
+}
+
+@keyframes profileDrawerSlide {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes profileOverlayFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-drawer-enter,
+  .profile-overlay-enter {
+    animation: none;
+  }
+}
+
+/* Hide scrollbar on mobile tabs */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+

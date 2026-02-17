@@ -18,6 +18,7 @@ const footerLinks = {
   produto: [
     { label: "Cheats", href: "/#products" },
     { label: "Showcase", href: "/#showcase" },
+    { label: "Minha Conta", href: "/perfil" },
   ],
   empresa: [
     { label: "Sobre", href: "/sobre" },

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LoginModal } from "@/components/auth/login-modal";
+import { useAuth } from "@/components/providers/auth-provider";
 import { cn } from "@/lib/utils";
 
 const DISCORD_URL = "https://discord.gg/solarhub";
@@ -29,11 +30,20 @@ function DiscordIcon({ className }: { className?: string }) {
   );
 }
 
+/* Mock user for login success */
+const MOCK_USER = {
+  id: "usr_001",
+  name: "Jogador",
+  email: "jogador@email.com",
+  createdAt: "2024-08-15T00:00:00Z",
+};
+
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const { isLoggedIn, login } = useAuth();
 
   const loginBtnRef = useRef<HTMLButtonElement>(null);
   const loginBtnMobileRef = useRef<HTMLButtonElement>(null);
@@ -50,9 +60,9 @@ export function Header() {
   }, []);
 
   const handleLoginSuccess = useCallback(() => {
-    setIsLoggedIn(true);
+    login(MOCK_USER);
     setLoginOpen(false);
-  }, []);
+  }, [login]);
 
   return (
     <>
@@ -122,10 +132,12 @@ export function Header() {
                 <div className="w-px h-5 bg-border/60" />
 
                 {isLoggedIn ? (
-                  <Button variant="secondary" size="sm" className="gap-1.5">
-                    <User className="w-3.5 h-3.5" />
-                    Conta
-                  </Button>
+                  <Link href="/perfil">
+                    <Button variant="secondary" size="sm" className="gap-1.5">
+                      <User className="w-3.5 h-3.5" />
+                      Conta
+                    </Button>
+                  </Link>
                 ) : (
                   <Button
                     ref={loginBtnRef}
@@ -205,10 +217,12 @@ export function Header() {
 
                   <div className="px-1">
                     {isLoggedIn ? (
-                      <Button variant="secondary" size="md" className="w-full gap-1.5">
-                        <User className="w-3.5 h-3.5" />
-                        Conta
-                      </Button>
+                      <Link href="/perfil" onClick={() => setMobileMenuOpen(false)}>
+                        <Button variant="secondary" size="md" className="w-full gap-1.5">
+                          <User className="w-3.5 h-3.5" />
+                          Conta
+                        </Button>
+                      </Link>
                     ) : (
                       <Button
                         ref={loginBtnMobileRef}
