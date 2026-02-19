@@ -24,7 +24,7 @@ export interface AuthUser {
 interface AuthContextValue {
   user: AuthUser | null;
   isLoggedIn: boolean;
-  login: (user: AuthUser) => void;
+  login: (user: { id: string; name: string; email: string; createdAt: string; avatarUrl?: string }) => void;
   logout: () => void;
 }
 

@@ -237,7 +237,7 @@ function AccountSection() {
     setLoading(false);
     if (res.ok) {
       setFeedback({ type: "success", msg: "Dados atualizados com sucesso." });
-      if (user) login({ ...user, name: name.trim(), email: email.trim() });
+      if (user) login({...user, name: name.trim(), email: email.trim()});
     } else {
       setFeedback({ type: "error", msg: res.error ?? "Erro ao atualizar." });
     }
